@@ -8,7 +8,6 @@ from utils import (
 import os
 import config
 #from utils import display_countdown_timer
-from utils import display_questionnaire
 
 # Load API library
 if "gpt" in config.MODEL.lower():
@@ -248,41 +247,34 @@ if st.session_state.interview_active:
                     pass
 
             # If code in the message, display the associated closing message instead
-# Loop over all codes
-for code in config.CLOSING_MESSAGES.keys():
+            # Loop over all codes
+            for code in config.CLOSING_MESSAGES.keys():
 
-    if code in message_interviewer:
-        # Store message in list of messages
-        st.session_state.messages.append(
-            {"role": "assistant", "content": message_interviewer}
-        )
+                if code in message_interviewer:
+                    # Store message in list of messages
+                    st.session_state.messages.append(
+                        {"role": "assistant", "content": message_interviewer}
+                    )
 
-        # 🟡 INSERTION: Display questionnaire before session ends
-        submitted = display_questionnaire(
-            username=st.session_state.username,
-            save_directory=config.TRANSCRIPTS_DIRECTORY,
-        )
-        if not submitted:
-            st.stop()
+                    # Set chat to inactive and display closing message
+                    st.session_state.interview_active = False
+                    closing_message = config.CLOSING_MESSAGES[code]
+                    st.markdown(closing_message)
+                    st.session_state.messages.append(
+                        {"role": "assistant", "content": closing_message}
+                    )
 
-        # Then continue final closing
-        st.session_state.interview_active = False
-        closing_message = config.CLOSING_MESSAGES[code]
-        st.markdown(closing_message)
-        st.session_state.messages.append(
-            {"role": "assistant", "content": closing_message}
-        )
+                    # Store final transcript and time
+                    final_transcript_stored = False
+                    while final_transcript_stored == False:
 
-        # Store final transcript and time
-        final_transcript_stored = False
-        while final_transcript_stored == False:
-            save_interview_data(
-                username=st.session_state.username,
-                transcripts_directory=config.TRANSCRIPTS_DIRECTORY,
-                times_directory=config.TIMES_DIRECTORY,
-            )
-            final_transcript_stored = check_if_interview_completed(
-                config.TRANSCRIPTS_DIRECTORY, st.session_state.username
-            )
-            time.sleep(0.1)
+                        save_interview_data(
+                            username=st.session_state.username,
+                            transcripts_directory=config.TRANSCRIPTS_DIRECTORY,
+                            times_directory=config.TIMES_DIRECTORY,
+                        )
 
+                        final_transcript_stored = check_if_interview_completed(
+                            config.TRANSCRIPTS_DIRECTORY, st.session_state.username
+                        )
+                        time.sleep(0.1)
