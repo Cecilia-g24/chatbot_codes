@@ -18,7 +18,8 @@ The interview platform is built using the library `streamlit` and the APIs of Op
 - Download miniconda from https://docs.anaconda.com/miniconda/miniconda-install/ and install it (skip if `conda` is already installed)
 - Obtain an API key from https://platform.openai.com/ or https://www.anthropic.com/api. In case of the OpenAI API, choose a "project" key
 - Download this repository
-- In the repository folder on your computer, paste your API key into the file `/code/.streamlit/secrets.toml` (requires to make hidden folders visible)
+- In the repository folder on your computer, paste your API key into the file `/code/.streamlit/example.secrets.toml` (requires to make hidden folders visible)
+- Rename the just-edited file `example.secrets.toml` to `secrets.toml`
 - In the config.py, select a language model and adjust the interview outline
 - In Terminal (Mac) or Anaconda Prompt (Windows), navigate to the folder `code` with `cd` (if unclear, briefly look up basic Linux command line syntax for navigating to folders)
 - Once in the `code` folder, create the environment from the .yml file by writing `conda env create -f interviewsenv.yml` and confirming with enter (this installs Python and all libraries necessary to run the platform; only needs to be done once)
