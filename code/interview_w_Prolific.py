@@ -9,11 +9,29 @@ import os
 import config
 
 
+
+# --- Extract Prolific parameters from URL ---
+query_params = st.query_params()
+prolific_pid = query_params.get("PROLIFIC_PID", [None])[0]
+study_id = query_params.get("STUDY_ID", [None])[0]
+session_id = query_params.get("SESSION_ID", [None])[0]
+
+# Optional: show for debugging
+if prolific_pid:
+    st.markdown(f"👤 Prolific PID: `{prolific_pid}`")
+if study_id:
+    st.markdown(f"🧪 Study ID: `{study_id}`")
+if session_id:
+    st.markdown(f"🪪 Session ID: `{session_id}`")
+
 # Load API library
 if "gpt" in config.MODEL.lower():
     api = "openai"
     from openai import OpenAI
 
+elif "claude" in config.MODEL.lower():
+    api = "anthropic"
+    import anthropic
 else:
     raise ValueError(
         "Model does not contain 'gpt' or 'claude'; unable to determine API."
@@ -23,15 +41,16 @@ else:
 st.set_page_config(page_title="NIM Interview", page_icon=config.AVATAR_INTERVIEWER)
 
 # Check if usernames and logins are enabled
+
 if config.LOGINS:
-    # Check password (displays login screen)
     pwd_correct, username = check_password()
     if not pwd_correct:
         st.stop()
     else:
         st.session_state.username = username
 else:
-    st.session_state.username = "testaccount"
+    st.session_state.username = prolific_pid or "testaccount"
+
 
 # Create directories if they do not already exist
 if not os.path.exists(config.TRANSCRIPTS_DIRECTORY):
@@ -40,6 +59,7 @@ if not os.path.exists(config.TIMES_DIRECTORY):
     os.makedirs(config.TIMES_DIRECTORY)
 if not os.path.exists(config.BACKUPS_DIRECTORY):
     os.makedirs(config.BACKUPS_DIRECTORY)
+
 
 # Initialise session state
 if "interview_active" not in st.session_state:
@@ -56,12 +76,6 @@ if "start_time" not in st.session_state:
         "%Y_%m_%d_%H_%M_%S", time.localtime(st.session_state.start_time)
     )
 
-if "closing_code_found" not in st.session_state:
-    st.session_state.closing_code_found = None
-
-if "questionnaire_submitted" not in st.session_state:
-    st.session_state.questionnaire_submitted = False
-
 # Check if interview previously completed
 interview_previously_completed = check_if_interview_completed(
     config.TIMES_DIRECTORY, st.session_state.username
@@ -69,6 +83,7 @@ interview_previously_completed = check_if_interview_completed(
 
 # If app started but interview was previously completed
 if interview_previously_completed and not st.session_state.messages:
+
     st.session_state.interview_active = False
     completed_message = "Interview already completed."
     st.markdown(completed_message)
@@ -77,10 +92,12 @@ if interview_previously_completed and not st.session_state.messages:
 col1, col2 = st.columns([0.85, 0.15])
 # Place where the second column is
 with col2:
+
     # If interview is active and 'Quit' button is clicked
     if st.session_state.interview_active and st.button(
         "Quit", help="End the interview."
     ):
+
         # Set interview to inactive, display quit message, and store data
         st.session_state.interview_active = False
         quit_message = "You have cancelled the interview."
@@ -91,8 +108,10 @@ with col2:
             config.TIMES_DIRECTORY,
         )
 
+
 # Upon rerun, display the previous conversation (except system prompt or first message)
 for message in st.session_state.messages[1:]:
+
     if message["role"] == "assistant":
         avatar = config.AVATAR_INTERVIEWER
     else:
@@ -104,8 +123,11 @@ for message in st.session_state.messages[1:]:
 
 # Load API client
 if api == "openai":
-    client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY', st.secrets["API_KEY_OPENAI"]))
+    client = OpenAI(api_key=st.secrets["API_KEY_OPENAI"])
     api_kwargs = {"stream": True}
+elif api == "anthropic":
+    client = anthropic.Anthropic(api_key=st.secrets["API_KEY_ANTHROPIC"])
+    api_kwargs = {"system": config.SYSTEM_PROMPT}
 
 # API kwargs
 api_kwargs["messages"] = st.session_state.messages
@@ -114,15 +136,35 @@ api_kwargs["max_tokens"] = config.MAX_OUTPUT_TOKENS
 if config.TEMPERATURE is not None:
     api_kwargs["temperature"] = config.TEMPERATURE
 
-# In case the interview history is still empty, pass system prompt to model, and generate and display its first message
+# In case the interview history is still empty, pass system prompt to model, and
+# generate and display its first message
 if not st.session_state.messages:
+
     if api == "openai":
-        st.session_state.messages.append({"role": "system", "content": config.SYSTEM_PROMPT})
+
+        st.session_state.messages.append(
+            {"role": "system", "content": config.SYSTEM_PROMPT}
+        )
         with st.chat_message("assistant", avatar=config.AVATAR_INTERVIEWER):
             stream = client.chat.completions.create(**api_kwargs)
             message_interviewer = st.write_stream(stream)
 
-    st.session_state.messages.append({"role": "assistant", "content": message_interviewer})
+    elif api == "anthropic":
+
+        st.session_state.messages.append({"role": "user", "content": "Hi"})
+        with st.chat_message("assistant", avatar=config.AVATAR_INTERVIEWER):
+            message_placeholder = st.empty()
+            message_interviewer = ""
+            with client.messages.stream(**api_kwargs) as stream:
+                for text_delta in stream.text_stream:
+                    if text_delta != None:
+                        message_interviewer += text_delta
+                    message_placeholder.markdown(message_interviewer + "▌")
+            message_placeholder.markdown(message_interviewer)
+
+    st.session_state.messages.append(
+        {"role": "assistant", "content": message_interviewer}
+    )
 
     # Store first backup files to record who started the interview
     save_interview_data(
@@ -133,11 +175,15 @@ if not st.session_state.messages:
         file_name_addition_time=f"_time_started_{st.session_state.start_time_file_names}",
     )
 
+
 # Main chat if interview is active
 if st.session_state.interview_active:
+
     # Chat input and message for respondent
     if message_respondent := st.chat_input("Your message here"):
-        st.session_state.messages.append({"role": "user", "content": message_respondent})
+        st.session_state.messages.append(
+            {"role": "user", "content": message_respondent}
+        )
 
         # Display respondent message
         with st.chat_message("user", avatar=config.AVATAR_RESPONDENT):
@@ -145,6 +191,7 @@ if st.session_state.interview_active:
 
         # Generate and display interviewer message
         with st.chat_message("assistant", avatar=config.AVATAR_INTERVIEWER):
+
             # Create placeholder for message in chat interface
             message_placeholder = st.empty()
 
@@ -152,52 +199,48 @@ if st.session_state.interview_active:
             message_interviewer = ""
 
             if api == "openai":
+
                 # Stream responses
                 stream = client.chat.completions.create(**api_kwargs)
+
                 for message in stream:
                     text_delta = message.choices[0].delta.content
-                    if text_delta is not None:
+                    if text_delta != None:
                         message_interviewer += text_delta
                     # Start displaying message only after 5 characters to first check for codes
                     if len(message_interviewer) > 5:
                         message_placeholder.markdown(message_interviewer + "▌")
-                    if any(code in message_interviewer for code in config.CLOSING_MESSAGES.keys()):
+                    if any(
+                        code in message_interviewer
+                        for code in config.CLOSING_MESSAGES.keys()
+                    ):
+                        # Stop displaying the progress of the message in case of a code
                         message_placeholder.empty()
                         break
 
+            elif api == "anthropic":
 
-            # Determine whether the message contains a closing code
-            closing_code_found = next(
-                (code for code in config.CLOSING_MESSAGES.keys() if code in message_interviewer), None
-            )
-            if closing_code_found:
-                message_placeholder.empty()
-                st.session_state.messages.append({"role": "assistant", "content": message_interviewer})
-                st.session_state.closing_code_found = closing_code_found
-                print("111")
-                    # Then continue final closing
-                st.session_state.interview_active = False
-                closing_message = config.CLOSING_MESSAGES[closing_code_found]
-                st.markdown(closing_message)
-                st.session_state.messages.append(
-                        {"role": "assistant", "content": closing_message}
-                    )
+                # Stream responses
+                with client.messages.stream(**api_kwargs) as stream:
+                    for text_delta in stream.text_stream:
+                        if text_delta != None:
+                            message_interviewer += text_delta
+                        # Start displaying message only after 5 characters to first check for codes
+                        if len(message_interviewer) > 5:
+                            message_placeholder.markdown(message_interviewer + "▌")
+                        if any(
+                            code in message_interviewer
+                            for code in config.CLOSING_MESSAGES.keys()
+                        ):
+                            # Stop displaying the progress of the message in case of a code
+                            message_placeholder.empty()
+                            break
 
-                    # Store final transcript and time
-                final_transcript_stored = False
-                while not final_transcript_stored:
-                        save_interview_data(
-                            username=st.session_state.username,
-                            transcripts_directory=config.TRANSCRIPTS_DIRECTORY,
-                            times_directory=config.TIMES_DIRECTORY,
-                        )
-                        final_transcript_stored = check_if_interview_completed(
-                            config.TRANSCRIPTS_DIRECTORY, st.session_state.username
-                        )
-                        time.sleep(0.1)
+            # If no code is in the message, display and store the message
+            if not any(
+                code in message_interviewer for code in config.CLOSING_MESSAGES.keys()
+            ):
 
-            else:
-                # If no code is in the message, display and store the message
                 message_placeholder.markdown(message_interviewer)
                 st.session_state.messages.append(
                     {"role": "assistant", "content": message_interviewer}
@@ -206,6 +249,7 @@ if st.session_state.interview_active:
                 # Regularly store interview progress as backup, but prevent script from
                 # stopping in case of a write error
                 try:
+
                     save_interview_data(
                         username=st.session_state.username,
                         transcripts_directory=config.BACKUPS_DIRECTORY,
@@ -213,31 +257,47 @@ if st.session_state.interview_active:
                         file_name_addition_transcript=f"_transcript_started_{st.session_state.start_time_file_names}",
                         file_name_addition_time=f"_time_started_{st.session_state.start_time_file_names}",
                     )
+
                 except:
+
                     pass
-if st.session_state.closing_code_found and not st.session_state.questionnaire_submitted:
-    with st.form("questionnaire_form"):
-        st.markdown("### 📝 Demographic Questionnaire")
 
-        q1 = st.radio("1. What is your gender?", ["Male", "Female", "Other"])
-        q2 = st.text_input("2. What is your age?")
-        q3 = st.radio("3. Highest education?", ["Secondary", "Bachelor", "Master", "Doctorate"])
-        q4 = st.radio("4. Employment status?", ["Employed", "Student", "Other"])
-        q5 = st.radio("5. Monthly income?", ["1-1000", "1001-2000", "2001+"])
+            # If code in the message, display the associated closing message instead
+            # Loop over all codes
+            for code in config.CLOSING_MESSAGES.keys():
 
-        submitted = st.form_submit_button("Submit")
-        if submitted:
-            st.session_state.questionnaire_submitted = True
-            st.session_state.questionnaire_responses = {
-                    "Gender": q1,
-                    "Age": q2,
-                    "Education": q3,
-                    "Employment": q4,
-                    "Income": q5
-            }
-            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{username}.txt")
-            with open(path, "a") as f:
-                f.write("\n\n--- Questionnaire Responses ---\n")
-                for key, value in st.session_state["questionnaire_responses"].items():
-                    f.write(f"{key}: {value}\n")
-            st.success(config.complete100)
+                if code in message_interviewer:
+                    # Store message in list of messages
+                    st.session_state.messages.append(
+                        {"role": "assistant", "content": message_interviewer}
+                    )
+
+                    # Set chat to inactive and display closing message
+                    st.session_state.interview_active = False
+                    closing_message = config.CLOSING_MESSAGES[code]
+                    st.markdown(closing_message)
+                    st.session_state.messages.append(
+                        {"role": "assistant", "content": closing_message}
+                    )
+
+                    # Store final transcript and time
+                    
+                    # --- Prolific redirect after completion ---
+                    COMPLETION_CODE = "CGR8B7PK"  # Replace with your actual code
+                    if prolific_pid:
+                        redirect_url = f"https://app.prolific.com/submissions/complete?cc={CGR8B7PK}"
+                        st.markdown(f'<meta http-equiv="refresh" content="3;url={redirect_url}">', unsafe_allow_html=True)
+
+        final_transcript_stored = False
+        while final_transcript_stored == False:
+
+            save_interview_data(
+                            username=st.session_state.username,
+                            transcripts_directory=config.TRANSCRIPTS_DIRECTORY,
+                            times_directory=config.TIMES_DIRECTORY,
+                        )
+
+            final_transcript_stored = check_if_interview_completed(
+                            config.TRANSCRIPTS_DIRECTORY, st.session_state.username
+                        )
+            time.sleep(0.1)

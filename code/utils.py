@@ -87,3 +87,30 @@ def save_interview_data(
         d.write(
             f"Start time (UTC): {time.strftime('%d/%m/%Y %H:%M:%S', time.localtime(st.session_state.start_time))}\nInterview duration (minutes): {duration:.2f}"
         )
+
+
+# adding the demographic & personality questionaire after the interview
+def display_questionnaire(username, save_directory):
+    with st.form("questionnaire_form"):  # Fixed the form name (had a dot instead of underscore)
+        st.markdown("## Demographic Questionnaire")  # Removed extra #
+        q1 = st.radio("1. What is your gender?", ["Male", "Female", "Other"])
+        q2 = st.text_input("2. What is your age?")  # Added missing closing parenthesis
+        q3 = st.radio("3. Highest education?", ["Secondary", "Bachelor", "Master", "Doctorate"])
+        q4 = st.radio("4. Employment status?", ["Employee", "Student", "Other"])
+        q5 = st.radio("5. Monthly income?", ["1-1000", "1001-2000", "2001+"])
+        submitted = st.form_submit_button("Submit")
+        print("submitt: "+str(submitted))
+        if submitted:
+            try:
+                path = os.path.join(save_directory, f"{username}_dsfdsf.txt")  # Changed from "./data" to save_directory
+                with open(path, "a") as f:
+                    f.write("\n\n--- Questionnaire Responses ---\n")
+                    f.write(f"1. Gender: {q1}\n2. Age: {q2}\n3. Education: {q3}\n4. Employment: {q4}\n5. Income: {q5}\n")
+                st.success("Thank you for your feedback!")
+                st.session_state.questionnaire_submitted = True  # Fixed variable name (removed underscore prefix)
+            except Exception as e:
+                st.error("Failed to save.")
+                print(f"Error: {e}")  # Added proper error logging
+
+
+
