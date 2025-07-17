@@ -89,7 +89,8 @@ def save_interview_data(
         )
 
 
-# adding the demographic & personality questionaire after the interview
+#### Test only, not used in main
+# adding the demographic & personality questionaire after the interview 
 def display_questionnaire(username, save_directory):
     with st.form("questionnaire_form"):  # Fixed the form name (had a dot instead of underscore)
         st.markdown("## Demographic Questionnaire")  # Removed extra #

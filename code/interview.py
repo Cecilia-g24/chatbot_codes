@@ -8,6 +8,7 @@ from utils import (
 import os
 import config
 
+from timer_display import show_countdown_timer_js
 
 # Load API library
 if "gpt" in config.MODEL.lower():
@@ -22,6 +23,8 @@ else:
 # Set page title and icon
 st.set_page_config(page_title="NIM Interview", page_icon=config.AVATAR_INTERVIEWER)
 
+show_countdown_timer_js(timer_seconds=config.TIME_SETTING)
+
 # Check if usernames and logins are enabled
 if config.LOGINS:
     # Check password (displays login screen)
@@ -32,6 +35,7 @@ if config.LOGINS:
         st.session_state.username = username
 else:
     st.session_state.username = "testaccount"
+
 
 # Create directories if they do not already exist
 if not os.path.exists(config.TRANSCRIPTS_DIRECTORY):
@@ -61,6 +65,8 @@ if "closing_code_found" not in st.session_state:
 
 if "questionnaire_submitted" not in st.session_state:
     st.session_state.questionnaire_submitted = False
+if "questionnaire_submitted_2" not in st.session_state:
+    st.session_state.questionnaire_submitted_2 = False
 
 # Check if interview previously completed
 interview_previously_completed = check_if_interview_completed(
@@ -72,6 +78,7 @@ if interview_previously_completed and not st.session_state.messages:
     st.session_state.interview_active = False
     completed_message = "Interview already completed."
     st.markdown(completed_message)
+
 
 # Add 'Quit' button to dashboard
 col1, col2 = st.columns([0.85, 0.15])
@@ -174,8 +181,8 @@ if st.session_state.interview_active:
                 message_placeholder.empty()
                 st.session_state.messages.append({"role": "assistant", "content": message_interviewer})
                 st.session_state.closing_code_found = closing_code_found
-                print("111")
-                    # Then continue final closing
+            
+            # Then continue final closing
                 st.session_state.interview_active = False
                 closing_message = config.CLOSING_MESSAGES[closing_code_found]
                 st.markdown(closing_message)
@@ -183,7 +190,7 @@ if st.session_state.interview_active:
                         {"role": "assistant", "content": closing_message}
                     )
 
-                    # Store final transcript and time
+                # Store final transcript and time
                 final_transcript_stored = False
                 while not final_transcript_stored:
                         save_interview_data(
@@ -215,6 +222,8 @@ if st.session_state.interview_active:
                     )
                 except:
                     pass
+
+# add the questionnaire section with streamlit's form function
 if st.session_state.closing_code_found and not st.session_state.questionnaire_submitted:
     with st.form("questionnaire_form"):
         st.markdown("### 📝 Demographic Questionnaire")
@@ -229,11 +238,11 @@ if st.session_state.closing_code_found and not st.session_state.questionnaire_su
         if submitted:
             st.session_state.questionnaire_submitted = True
             st.session_state.questionnaire_responses = {
-                    "Gender": q1,
-                    "Age": q2,
-                    "Education": q3,
-                    "Employment": q4,
-                    "Income": q5
+                    "Gender":      q1,
+                    "Age":         q2,
+                    "Education":   q3,
+                    "Employment":  q4,
+                    "Income":      q5
             }
             path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{username}.txt")
             with open(path, "a") as f:
@@ -241,3 +250,7 @@ if st.session_state.closing_code_found and not st.session_state.questionnaire_su
                 for key, value in st.session_state["questionnaire_responses"].items():
                     f.write(f"{key}: {value}\n")
             st.success(config.complete100)
+
+
+if st.session_state.closing_code_found and  st.session_state.questionnaire_submitted and not st.session_state.questionnaire_submitted_2:
+    pass
