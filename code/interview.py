@@ -65,8 +65,8 @@ if "closing_code_found" not in st.session_state:
 
 if "questionnaire_submitted" not in st.session_state:
     st.session_state.questionnaire_submitted = False
-if "questionnaire_submitted_2" not in st.session_state:
-    st.session_state.questionnaire_submitted_2 = False
+if "matrix_submitted" not in st.session_state:
+    st.session_state.matrix_submitted = False
 
 # Check if interview previously completed
 interview_previously_completed = check_if_interview_completed(
@@ -223,16 +223,19 @@ if st.session_state.interview_active:
                 except:
                     pass
 
-# add the questionnaire section with streamlit's form function
+
+# add the demographic questionnaire section with streamlit's form function
+# if condition: no code + q1 not submitted + q2 not submitted 
 if st.session_state.closing_code_found and not st.session_state.questionnaire_submitted:
     with st.form("questionnaire_form"):
-        st.markdown("### 📝 Demographic Questionnaire")
+        st.markdown("### 📝 Part 2: Demographic Questionnaire")
 
         q1 = st.radio("1. What is your gender?", ["Male", "Female", "Other"])
-        q2 = st.text_input("2. What is your age?")
-        q3 = st.radio("3. Highest education?", ["Secondary", "Bachelor", "Master", "Doctorate"])
-        q4 = st.radio("4. Employment status?", ["Employed", "Student", "Other"])
-        q5 = st.radio("5. Monthly income?", ["1-1000", "1001-2000", "2001+"])
+        q2 = st.selectbox("2. What is your age?", options=list(range(18, 101)))
+        #q2 = st.text_input("2. What is your age?")
+        q3 = st.radio("3. What is your highest level of education?", ["Secondary School", "Bachelor;s Degree", "Master's Degree", "Doctorate"])
+        q4 = st.radio("4. What is your current employment status?", ["Employed", "Unemployed", "Student", "Other"])
+        q5 = st.radio("5. What is your average net monthly income?", ["1-1000", "1001-2000", "2001-5000", "5001+"])
 
         submitted = st.form_submit_button("Submit")
         if submitted:
@@ -249,8 +252,39 @@ if st.session_state.closing_code_found and not st.session_state.questionnaire_su
                 f.write("\n\n--- Questionnaire Responses ---\n")
                 for key, value in st.session_state["questionnaire_responses"].items():
                     f.write(f"{key}: {value}\n")
-            st.success(config.complete100)
+            st.success(config.complete_message_questionnaire)
 
 
-if st.session_state.closing_code_found and  st.session_state.questionnaire_submitted and not st.session_state.questionnaire_submitted_2:
-    pass
+
+# add VALUE ORIENTATION MATRIX SECTION
+# if condition: no code + questionnaire submitted + matrix not submitted 
+if st.session_state.closing_code_found and st.session_state.questionnaire_submitted and not st.session_state.matrix_submitted:
+    with st.form("matrix_questionnaire_form"):
+        st.markdown("### 🧭 Part 3: Value Orientation Matrix")
+        st.write("Now I will briefly describe some people. Please read each description and tell me how much they are or are not like you.")
+
+        matrix_questions = config.matrix_questions
+        matrix_options = config.matrix_options
+        matrix_answers = {}
+        for key, question in matrix_questions.items():
+            st.markdown(f"**{key}. {question}**")
+            matrix_answers[key] = st.radio(
+                label="",
+                options=matrix_options,
+                key=f"matrix_{key}",
+                horizontal=True
+            )
+
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            st.session_state.matrix_submitted = True
+            st.session_state.matrix_responses = matrix_answers
+
+            # Append to same file
+            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{username}.txt")
+            with open(path, "a") as f:
+                f.write("\n\n--- Value Orientation Responses ---\n")
+                for key, value in st.session_state["matrix_responses"].items():
+                    f.write(f"{key}: {value}\n")
+
+            st.success(config.complete_message_valuematrix)
