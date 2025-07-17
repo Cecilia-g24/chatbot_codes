@@ -232,8 +232,7 @@ if st.session_state.closing_code_found and not st.session_state.questionnaire_su
 
         q1 = st.radio("1. What is your gender?", ["Male", "Female", "Other"])
         q2 = st.selectbox("2. What is your age?", options=list(range(18, 101)))
-        #q2 = st.text_input("2. What is your age?")
-        q3 = st.radio("3. What is your highest level of education?", ["Secondary School", "Bachelor;s Degree", "Master's Degree", "Doctorate"])
+        q3 = st.radio("3. What is your highest level of education?", ["Secondary School", "Bachelor's Degree", "Master's Degree", "Doctorate"])
         q4 = st.radio("4. What is your current employment status?", ["Employed", "Unemployed", "Student", "Other"])
         q5 = st.radio("5. What is your average net monthly income?", ["1-1000", "1001-2000", "2001-5000", "5001+"])
 
@@ -259,20 +258,21 @@ if st.session_state.closing_code_found and not st.session_state.questionnaire_su
 # add VALUE ORIENTATION MATRIX SECTION
 # if condition: no code + questionnaire submitted + matrix not submitted 
 if st.session_state.closing_code_found and st.session_state.questionnaire_submitted and not st.session_state.matrix_submitted:
+    
     with st.form("matrix_questionnaire_form"):
-        st.markdown("### 🧭 Part 3: Value Orientation Matrix")
-        st.write("Now I will briefly describe some people. Please read each description and tell me how much they are or are not like you.")
+        st.markdown("### 🧭 Part 3: Value Orientation Questionnaire")
+        st.write("Now I will briefly describe some people. Please use the slider to rank how much they are or are not like you.")
 
-        matrix_questions = config.matrix_questions
-        matrix_options = config.matrix_options
         matrix_answers = {}
-        for key, question in matrix_questions.items():
-            st.markdown(f"**{key}. {question}**")
-            matrix_answers[key] = st.radio(
+        for key, question in config.likert_questions.items():
+            st.markdown(f"**({key})** {question}")
+
+            matrix_answers[key] = st.select_slider(
                 label="",
-                options=matrix_options,
-                key=f"matrix_{key}",
-                horizontal=True
+                options=config.likert_labels,
+                value=None,
+                key=f"matrix_slider_{key}",
+                label_visibility="collapsed"
             )
 
         submitted = st.form_submit_button("Submit")
@@ -280,7 +280,6 @@ if st.session_state.closing_code_found and st.session_state.questionnaire_submit
             st.session_state.matrix_submitted = True
             st.session_state.matrix_responses = matrix_answers
 
-            # Append to same file
             path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{username}.txt")
             with open(path, "a") as f:
                 f.write("\n\n--- Value Orientation Responses ---\n")
@@ -288,3 +287,6 @@ if st.session_state.closing_code_found and st.session_state.questionnaire_submit
                     f.write(f"{key}: {value}\n")
 
             st.success(config.complete_message_valuematrix)
+
+
+
