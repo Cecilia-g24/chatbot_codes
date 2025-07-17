@@ -8,7 +8,9 @@ from utils import (
 import os
 import config
 
+# for countdown timer 
 from timer_display import show_countdown_timer_js
+
 
 # Load API library
 if "gpt" in config.MODEL.lower():
@@ -287,6 +289,3 @@ if st.session_state.closing_code_found and st.session_state.questionnaire_submit
                     f.write(f"{key}: {value}\n")
 
             st.success(config.complete_message_valuematrix)
-
-
-
