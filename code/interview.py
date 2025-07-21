@@ -7,39 +7,50 @@ from utils import (
 )
 import os
 import config
+from timer_display import show_countdown_timer_js  # for countdown timer 
 
 
-import numpy
+# Set page title and icon
+st.set_page_config(page_title="NIM Interview", page_icon=config.AVATAR_INTERVIEWER)
 
-# for countdown timer 
-from timer_display import show_countdown_timer_js
+
+# Extract Prolific parameters from URL 
+query_params = st.query_params
+prolific_pid = query_params.get("PROLIFIC_PID", [None])
+study_id = query_params.get("STUDY_ID", [None])
+session_id = query_params.get("SESSION_ID", [None])
+
+
+# on-screen display to show prolific id
+if prolific_pid:
+    st.markdown(f"👤 Prolific PID: `{prolific_pid}`")
 
 
 # Load API library
 if "gpt" in config.MODEL.lower():
     api = "openai"
     from openai import OpenAI
-
 else:
     raise ValueError(
         "Model does not contain 'gpt' or 'claude'; unable to determine API."
     )
 
-# Set page title and icon
-st.set_page_config(page_title="NIM Interview", page_icon=config.AVATAR_INTERVIEWER)
 
+# show timer on screen, function imported from timer_display.py
 show_countdown_timer_js(timer_seconds=config.TIME_SETTING)
+
 
 # Check if usernames and logins are enabled
 if config.LOGINS:
-    # Check password (displays login screen)
     pwd_correct, username = check_password()
     if not pwd_correct:
         st.stop()
     else:
         st.session_state.username = username
+# set prolific_pid = username, when login function is disabled
 else:
-    st.session_state.username = "testaccount"
+    st.session_state.username = prolific_pid or "testaccount"
+
 
 
 # Create directories if they do not already exist
@@ -103,6 +114,8 @@ with col2:
             config.TIMES_DIRECTORY,
         )
 
+
+
 # Upon rerun, display the previous conversation (except system prompt or first message)
 for message in st.session_state.messages[1:]:
     if message["role"] == "assistant":
@@ -144,6 +157,30 @@ if not st.session_state.messages:
         file_name_addition_transcript=f"_transcript_started_{st.session_state.start_time_file_names}",
         file_name_addition_time=f"_time_started_{st.session_state.start_time_file_names}",
     )
+
+
+# --- Add time-out and warning logic ---
+elapsed_time = int(time.time() - st.session_state.start_time)
+remaining_time = config.TIME_SETTING - elapsed_time
+
+# Show warning if less than 30 seconds left, and still active
+if 0 < remaining_time <= 30 and st.session_state.interview_active:
+    st.warning(
+        f"⚠️ Only {remaining_time} seconds left for Part 1. Please wrap up your response.",
+        icon="⚠️"
+    )
+
+# If time is up, end the interview
+if remaining_time <= 0 and st.session_state.interview_active:
+    st.session_state.interview_active = False
+    st.markdown("⏰ **Time is up. The interview has been terminated automatically.**")
+    save_interview_data(
+        username=st.session_state.username,
+        transcripts_directory=config.TRANSCRIPTS_DIRECTORY,
+        times_directory=config.TIMES_DIRECTORY,
+    )
+
+
 
 # Main chat if interview is active
 if st.session_state.interview_active:
@@ -251,7 +288,7 @@ if st.session_state.closing_code_found and not st.session_state.questionnaire_su
                     "Employment":  q4,
                     "Income":      q5
             }
-            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{username}.txt")
+            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
             with open(path, "a") as f:
                 f.write("\n\n--- Questionnaire Responses ---\n")
                 for key, value in st.session_state["questionnaire_responses"].items():
@@ -285,10 +322,23 @@ if st.session_state.closing_code_found and st.session_state.questionnaire_submit
             st.session_state.matrix_submitted = True
             st.session_state.matrix_responses = matrix_answers
 
-            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{username}.txt")
+            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
             with open(path, "a") as f:
                 f.write("\n\n--- Value Orientation Responses ---\n")
                 for key, value in st.session_state["matrix_responses"].items():
                     f.write(f"{key}: {value}\n")
 
             st.success(config.complete_message_valuematrix)
+
+
+
+# provide prolific redirection link 
+if st.session_state.closing_code_found and st.session_state.questionnaire_submitted and st.session_state.matrix_submitted:
+    st.success("You have completed the study.")
+    st.write("Please click the button below to return to Prolific and submit your completion code.")
+
+    if st.button("Return to Prolific"):
+        st.markdown(
+            f'<meta http-equiv="refresh" content="0; url={config.prolific_completion_url}">',
+            unsafe_allow_html=True,
+        )

@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # --- Configuration ---
@@ -7,7 +6,7 @@ SLEEP_INTERVAL=60
 
 # --- Initial Start-up ---
 echo "🚀 Starting initial Streamlit process..."
-streamlit run interview.py --server.port 8502 --server.baseUrlPath test &
+streamlit run interview.py --server.port 8501 --server.baseUrlPath study &
 PID=$!
 echo "✅ Streamlit started with PID: $PID"
 
@@ -34,7 +33,7 @@ while true; do
     echo "🛑 Stopped old process with PID: $PID"
     
     # Start the new Streamlit process
-    streamlit run interview.py --server.port 8502 --server.baseUrlPath test &
+    streamlit run interview.py --server.port 8501 --server.baseUrlPath study &
     PID=$!
     echo "🚀 New Streamlit process started with PID: $PID"
   else

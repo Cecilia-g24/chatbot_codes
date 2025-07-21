@@ -42,8 +42,8 @@ End of the interview: When you have asked all questions from the Interview Outli
 CLOSING_MESSAGES = {}
 CLOSING_MESSAGES["555_exit"] = "Thank you for participating, the interview concludes here."
 CLOSING_MESSAGES["666_complete_interview"] = (
-    "You have successfully completed the chat interview. "
-    "Now please type anything below to continue."
+    "You have successfully completed Part 1. "
+    "Now please type anything below to continue to Part 2&3."
 )
 
 
@@ -60,7 +60,7 @@ MAX_OUTPUT_TOKENS = 2048
 
 
 # Display login screen with usernames and simple passwords for studies
-LOGINS = True
+LOGINS = False
 
 
 # Directories
@@ -75,7 +75,7 @@ AVATAR_RESPONDENT = "\U0001F9D1\U0000200D\U0001F4BB"
 
 
 # Max time for countdown timer (in seconds)
-TIME_SETTING = 300
+TIME_SETTING = 60
 
 
 # store likert questions
@@ -115,5 +115,20 @@ likert_labels = [
 
 
 # store st.success print message
-complete_message_questionnaire = "You have completed Part 2. Please continue to Part 3."
-complete_message_valuematrix = "You have completed the interview. Thank you for your time! Please click the Prolific rediction button below."
+complete_message_questionnaire = "Part 2 completed. Please continue to Part 3."
+complete_message_valuematrix = "Part 3 completed"
+
+
+# Prolific redirection URL
+prolific_completion_url = "https://app.prolific.com/submissions/complete?cc=C18B71P5"
+
+
+
+
+
+
+
+# prolific mock URL: testing purposes only
+"""
+/?PROLIFIC_PID={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}
+"""
