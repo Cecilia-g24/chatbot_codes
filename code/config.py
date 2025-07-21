@@ -84,18 +84,7 @@ When the respondent confirms that their views on the government’s role in copi
 
 
 ***************************************
-Summary and evaluation
-
-To conclude, write a detailed summary of the answers that the respondent gave in this interview. 
-After your summary, add the text: "How optimistic or pessimistic do you feel about the overall economic impact of Artificial Intelligence on your country in the coming years? 
-1 – Very pessimistic;
-2 – Somewhat pessimistic;
-3 – Neutral;
-4 – Somewhat optimistic;
-5 – Very optimistic. 
-Please only reply with the associated number."
-
-After receiving their final evaluation, please end the interview."""
+After receiving their answer to Part 5, please end the interview."""
 
 
 # General instructions
@@ -121,7 +110,7 @@ Lastly, there are specific codes that must be used exclusively in designated sit
 
 Problematic content: If the respondent writes legally or ethically problematic content, please reply with exactly the code '555_exit' and no other text.
 
-End of the interview: When you have asked all questions from the Interview Outline, or when the respondent does not want to continue the interview, please reply with exactly the code '666_complete' and no other text."""
+End of the interview: When you have asked all questions from the Interview Outline, or when the respondent does not want to continue the interview, please reply with exactly the code '666_complete_interview' and no other text."""
 
 
 
@@ -131,7 +120,7 @@ CLOSING_MESSAGES = {}
 CLOSING_MESSAGES["555_exit"] = "Thank you for participating, the interview concludes here."
 CLOSING_MESSAGES["666_complete_interview"] = (
     "You have successfully completed Part 1. "
-    "Now please type anything below to continue to Part 2&3."
+    "Now please continue to fill out Part 2 & 3."
 )
 
 
@@ -162,8 +151,8 @@ AVATAR_INTERVIEWER = "\U0001F393"
 AVATAR_RESPONDENT = "\U0001F9D1\U0000200D\U0001F4BB"
 
 
-# Max time for countdown timer (in seconds)
-TIME_SETTING = 60
+# Max time for countdown timer for interview / API interaction (in seconds)
+TIME_SETTING = 1200       #20 min
 
 
 # store likert questions

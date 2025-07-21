@@ -163,8 +163,8 @@ if not st.session_state.messages:
 elapsed_time = int(time.time() - st.session_state.start_time)
 remaining_time = config.TIME_SETTING - elapsed_time
 
-# Show warning if less than 30 seconds left, and still active
-if 0 < remaining_time <= 30 and st.session_state.interview_active:
+# Show warning if less than 60 seconds left and interview still active
+if 0 < remaining_time <= 60 and st.session_state.interview_active:
     st.warning(
         f"⚠️ Only {remaining_time} seconds left for Part 1. Please wrap up your response.",
         icon="⚠️"
