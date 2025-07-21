@@ -8,6 +8,9 @@ from utils import (
 import os
 import config
 
+
+import numpy
+
 # for countdown timer 
 from timer_display import show_countdown_timer_js
 
