@@ -63,27 +63,25 @@ def save_interview_data(
     username,
     transcripts_directory,
     times_directory,
-    file_name_addition_transcript="",
-    file_name_addition_time="",
+    file_name_addition_transcript='',
+    file_name_addition_time=''
 ):
     """Write interview data (transcript and time) to disk."""
-
+    transcripts_directory_file_path = os.path.join(transcripts_directory, f"{username}{file_name_addition_transcript}.txt")
+    times_directory_file_path = os.path.join(times_directory, f"{username}{file_name_addition_time}.txt")
     # Store chat transcript
-    with open(
-        os.path.join(
-            transcripts_directory, f"{username}{file_name_addition_transcript}.txt"
-        ),
-        "w",
-    ) as t:
+    with open(transcripts_directory_file_path,"w",encoding="utf-8") as t:
+        t.write("Start of Chat Interview\n")
         for message in st.session_state.messages:
-            t.write(f"{message['role']}: {message['content']}\n")
+            if message['role'] in ["assistant","user"]:
+                t.write(f"{message['role']}: {message['content']}\n")
 
     # Store file with start time and duration of interview
-    with open(
-        os.path.join(times_directory, f"{username}{file_name_addition_time}.txt"),
-        "w",
-    ) as d:
+    with open(times_directory_file_path,"w",encoding="utf-8") as d:
         duration = (time.time() - st.session_state.start_time) / 60
         d.write(
             f"Start time (UTC): {time.strftime('%d/%m/%Y %H:%M:%S', time.localtime(st.session_state.start_time))}\nInterview duration (minutes): {duration:.2f}"
         )
+
+
+

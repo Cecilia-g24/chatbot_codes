@@ -1,0 +1,6 @@
+Start of Chat Interview
+assistant: What is your favorite animal?
+user: dogs
+assistant: That's wonderful! Could you describe a specific event or situation that highlights why dogs are your favorite animal?
+user: no
+assistant: Alright, no problem. Is there another aspect or reason why you favor dogs that you'd like to share?

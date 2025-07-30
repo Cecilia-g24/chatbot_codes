@@ -1,0 +1,57 @@
+Start of Chat Interview
+assistant: What is your favorite animal?
+user: dogs
+user: no
+assistant: I see. Can you tell me why dogs are your favorite animal?
+user: no
+assistant: That's alright. Is there another animal you particularly like?
+user: no
+assistant: Thank you for your time. 666_complete_interview
+assistant: Thank you for your responses. It was nice talking with you. Please proceed to fill out the following questionnaires.
+
+
+--- Questionnaire 1 (Demographics) Responses ---
+Age: 18
+Gender: Male
+State of Residence: Alabama
+Zip Code: 
+Ethnicity / Race: White
+Education: Less than high school
+Area Type: Urban
+Employment Status: Employed full-time (¡Ý30 hrs/week)
+Occupation: 
+Industry: cecilia
+Number of Children: 0
+Household Size: 1
+Household Income: Less than $10,000
+Presidential Vote: Donald Trump
+Political Identification: Democrat
+Religious Affiliation: None
+US Citizen: Yes
+Born in US: Yes
+Primary Language: English
+AI Use Frequency: Multiple times a day
+
+
+--- Questionnaire 2 (ESS) Responses  ---
+1: Very much like me
+2: Very much like me
+3: Very much like me
+4: Very much like me
+5: Very much like me
+6: Very much like me
+7: Very much like me
+8: Very much like me
+9: Very much like me
+10: Very much like me
+11: Very much like me
+12: Very much like me
+13: Very much like me
+14: Very much like me
+15: Very much like me
+16: Very much like me
+17: Very much like me
+18: Very much like me
+19: Very much like me
+20: Very much like me
+21: Very much like me

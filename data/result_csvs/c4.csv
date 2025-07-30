@@ -1,0 +1,13 @@
+pID,interview_text,Q1_Age,Q1_Gender,Q1_State of Residence,Q1_Zip Code,Q1_Ethnicity / Race,Q1_Education,Q1_Area Type,Q1_Employment Status,Q1_Occupation,Q1_Industry,Q1_Number of Children,Q1_Household Size,Q1_Household Income,Q1_Presidential Vote,Q1_Political Identification,Q1_Religious Affiliation,Q1_US Citizen,Q1_Born in US,Q1_Primary Language,Q1_AI Use Frequency,Q2_1,Q2_2,Q2_3,Q2_4,Q2_5,Q2_6,Q2_7,Q2_8,Q2_9,Q2_10,Q2_11,Q2_12,Q2_13,Q2_14,Q2_15,Q2_16,Q2_17,Q2_18,Q2_19,Q2_20,Q2_21
+c4,"assistant: What is your favorite animal?
+user: dogs
+user: no
+assistant: I see. Can you tell me why dogs are your favorite animal?
+user: no
+assistant: That's alright. Is there another animal you particularly like?
+user: no
+assistant: Thank you for your time. 666_complete_interview
+assistant: Thank you for your responses. It was nice talking with you. Please proceed to fill out the following questionnaires.
+
+
+", 18, Male, Alabama,, White, Less than high school, Urban, Employed full-time (��30 hrs/week),, cecilia, 0, 1," Less than $10,000", Donald Trump, Democrat, None, Yes, Yes, English, Multiple times a day, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me, Very much like me

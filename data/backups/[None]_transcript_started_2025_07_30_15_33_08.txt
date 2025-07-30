@@ -1,0 +1,8 @@
+Start of Chat Interview
+assistant: What is your favorite animal?
+user: dogs
+assistant: Can you describe a specific memory or experience you've had with a dog that made it your favorite animal?
+user: no
+assistant: What qualities or characteristics do you like most about dogs that make them your favorite animal?
+user: no
+assistant: Alright. Is there anything else you'd like to share about why dogs are significant to you?

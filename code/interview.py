@@ -287,7 +287,7 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 0:
         q3 = st.selectbox("3. State of Residence", options=config.us_states)
 
         # 4. Zip Code 
-        q4 = st.text_input("4. Zip Code (5-digit)", value="", key= "type your response here")
+        #q4 = st.text_input("4. Zip Code (5-digit)", value="", key= "type your response here")
 
         # 5. Ethnicity / Race
         q5 = st.selectbox(
@@ -312,18 +312,15 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 0:
         # 8. Employment status
         q8 = st.selectbox(
             "8. Current employment status",
-            ["Employed full-time (≥30 hrs/week)","Employed part-time (8–29 hrs/week)","Self-employed",
+            ["Employed full-time (more than 30 hrs/week)","Employed part-time (8–29 hrs/week)","Self-employed",
              "Unemployed, seeking work","Not in labor force","Retired","Student","Other"]
         )
 
         # 9. Occupation
-        q9 = st.text_area(
-            "9. Occupation"
-            
-        )
+        q9 = st.selectbox("9. What is your current occupation?", options=config.occupations)
 
         # 10. Industry
-        q10 = st.text_input("10. Industry or sector of your work")
+        q10 = st.selectbox("10. Industry or sector of your work", options=config.industry)
 
         # 11. Number of children
         q11 = st.radio("11. Total number of children", ["0","1","2","3","More than 3"])
@@ -379,7 +376,7 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 0:
                 "Age": q1,
                 "Gender": q2,
                 "State of Residence": q3,
-                "Zip Code": q4,
+                #"Zip Code": q4,
                 "Ethnicity / Race": q5,
                 "Education": q6,
                 "Area Type": q7,
