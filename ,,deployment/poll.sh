@@ -1,7 +1,11 @@
 #!/bin/bash
 
-# check if we're in the right branch
+if [ $(basename $(pwd)) != "code" ] ; then
+  echo "PLEASE RUN ME FROM THE code/ SUBDIR!"
+  exit 1
+fi
 
+# check if we're in the right branch
 git_branch=$(git rev-parse --abbrev-ref HEAD)
 case $git_branch in
   main)
@@ -61,4 +65,3 @@ while true; do
   echo "😴 Sleeping for $SLEEP_INTERVAL seconds..."
   sleep $SLEEP_INTERVAL
 done
-
