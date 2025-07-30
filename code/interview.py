@@ -76,24 +76,26 @@ if "start_time" not in st.session_state:
         "%Y_%m_%d_%H_%M_%S", time.localtime(st.session_state.start_time)
     )
 
+
+# Initialize closing code for ending interview
 if "closing_code_found" not in st.session_state:
     st.session_state.closing_code_found = None
+# Initialize questionnaire step flags for state control 
+if "qnsubmitted" not in st.session_state:
+    st.session_state.qnsubmitted = 0
 
-if "questionnaire_submitted" not in st.session_state:
-    st.session_state.questionnaire_submitted = False
-if "matrix_submitted" not in st.session_state:
-    st.session_state.matrix_submitted = False
 
 # Check if interview previously completed
 interview_previously_completed = check_if_interview_completed(
     config.TIMES_DIRECTORY, st.session_state.username
 )
 
+
 # If app started but interview was previously completed
 if interview_previously_completed and not st.session_state.messages:
     st.session_state.interview_active = False
     completed_message = "Interview already completed."
-    st.markdown(completed_message)
+    st.warning(completed_message)
 
 
 # Add 'Quit' button to dashboard
@@ -113,7 +115,6 @@ with col2:
             config.TRANSCRIPTS_DIRECTORY,
             config.TIMES_DIRECTORY,
         )
-
 
 
 # Upon rerun, display the previous conversation (except system prompt or first message)
@@ -219,6 +220,7 @@ if st.session_state.interview_active:
             closing_code_found = next(
                 (code for code in config.CLOSING_MESSAGES.keys() if code in message_interviewer), None
             )
+
             if closing_code_found:
                 message_placeholder.empty()
                 st.session_state.messages.append({"role": "assistant", "content": message_interviewer})
@@ -244,6 +246,7 @@ if st.session_state.interview_active:
                             config.TRANSCRIPTS_DIRECTORY, st.session_state.username
                         )
                         time.sleep(0.1)
+                st.rerun()
 
             else:
                 # If no code is in the message, display and store the message
@@ -266,77 +269,419 @@ if st.session_state.interview_active:
                     pass
 
 
-# add the demographic questionnaire section with streamlit's form function
-# if condition: no code + q1 not submitted + q2 not submitted 
-if st.session_state.closing_code_found and not st.session_state.questionnaire_submitted:
-    with st.form("questionnaire_form"):
-        st.markdown("### 📝 Part 2: Demographic Questionnaire")
+# Q1: demographics questionnaire (Post-Interview Questionnaire on AI and Economic Outlook) 
+# if condition: yes closing code + no qs submitted
+if st.session_state.closing_code_found and st.session_state.qnsubmitted == 0:
+    with st.form("q1_form"):
+        st.markdown("### 📝 Questionnaires (1/9)")
 
-        q1 = st.radio("1. What is your gender?", ["Male", "Female", "Other"])
-        q2 = st.selectbox("2. What is your age?", options=list(range(18, 101)))
-        q3 = st.radio("3. What is your highest level of education?", ["Secondary School", "Bachelor's Degree", "Master's Degree", "Doctorate"])
-        q4 = st.radio("4. What is your current employment status?", ["Employed", "Unemployed", "Student", "Other"])
-        q5 = st.radio("5. What is your average net monthly income?", ["1-1000", "1001-2000", "2001-5000", "5001+"])
 
+        # 1. Age
+        q1 = st.selectbox("1. What is your age?", options=list(range(18, 101)))
+
+        # 2. Gender
+        q2 = st.radio("2. What is your gender?", 
+                      ["Male", "Female", "Prefer to self-describe", "Prefer not to say"])
+
+        # 3. State of Residence
+        q3 = st.selectbox("3. State of Residence", options=config.us_states)
+
+        # 4. Zip Code 
+        q4 = st.text_input("4. Zip Code (5-digit)", value="", key= "type your response here")
+
+        # 5. Ethnicity / Race
+        q5 = st.selectbox(
+            "5. Ethnicity / Race",
+            ["White","Black or African American","Hispanic or Latino","Asian",
+             "Native American or Alaska Native","Native Hawaiian or Pacific Islander",
+             "Multiracial","Other","Prefer not to say"]
+        )
+
+        # 6. Education
+        q6 = st.selectbox(
+            "6. Highest level of education completed",
+            ["Less than high school","High school diploma or equivalent",
+             "Some college, no degree","Associate’s degree","Bachelor’s degree",
+             "Master’s degree","Doctorate or professional degree","Prefer not to say"]
+        )
+
+        # 7. Area type
+        q7 = st.radio("7. How would you describe the area you live in?",
+                      ["Urban","Urban/Rural Mix","Rural"])
+
+        # 8. Employment status
+        q8 = st.selectbox(
+            "8. Current employment status",
+            ["Employed full-time (≥30 hrs/week)","Employed part-time (8–29 hrs/week)","Self-employed",
+             "Unemployed, seeking work","Not in labor force","Retired","Student","Other"]
+        )
+
+        # 9. Occupation
+        q9 = st.text_area(
+            "9. Occupation"
+            
+        )
+
+        # 10. Industry
+        q10 = st.text_input("10. Industry or sector of your work")
+
+        # 11. Number of children
+        q11 = st.radio("11. Total number of children", ["0","1","2","3","More than 3"])
+
+        # 12. Household size
+        q12 = st.selectbox("12. What is your household size?", options=list(range(1, 10)))
+
+        # 13. Household income
+        q13 = st.selectbox(
+            "13. Total annual household income (before tax)",
+            ["Less than $10,000","$10,000–19,999","$20,000–29,999","$30,000–39,999","$40,000–49,999",
+             "$50,000–59,999","$60,000–74,999","$75,000–99,999","$100,000–124,999",
+             "$125,000–149,999","$150,000–199,999","$200,000–249,999","$250,000 or more",
+             "Prefer not to answer"]
+        )
+
+        # 14. Presidential vote
+        q14 = st.radio("14. Who did you vote for in the last U.S. presidential election?",
+                       ["Donald Trump","Kamala Harris","Someone else","I did not vote","Prefer not to say"])
+
+        # 15. Political identification
+        q15 = st.radio("15. Political identification",
+                       ["Democrat","Republican","Independent","Other","Prefer not to say"])
+
+        # 19. Religious affiliation
+        q19 = st.selectbox("19. Religious affiliation",
+                           ["None","Christian – Protestant","Christian – Catholic","Other Christian",
+                            "Jewish","Muslim","Hindu","Buddhist","Other religion","Prefer not to say"])
+
+        # 20. U.S. citizenship
+        q20 = st.radio("20. Are you a U.S. citizen?",
+                       ["Yes","No","Prefer not to say"])
+
+        # 21. Born in U.S.
+        q21 = st.radio("21. Were you born in the United States?",
+                       ["Yes","No","Prefer not to say"])
+
+        # 22. Primary language
+        q22 = st.selectbox("22. Primary language at home",
+                           ["English","Spanish","Chinese","Vietnamese","Other","Prefer not to say"])
+
+        # 23. Frequency of AI use
+        q23 = st.selectbox("23. Frequency of AI use",
+                           ["Multiple times a day","Once a day","A few times per week","A few times per month",
+                            "Rarely","Never","I’m not sure"])
+
+        ##############################
+        st.info(config.submit_warning)
         submitted = st.form_submit_button("Submit")
+
         if submitted:
-            st.session_state.questionnaire_submitted = True
-            st.session_state.questionnaire_responses = {
-                    "Gender":      q1,
-                    "Age":         q2,
-                    "Education":   q3,
-                    "Employment":  q4,
-                    "Income":      q5
+            st.session_state.q1_responses = {
+                "Age": q1,
+                "Gender": q2,
+                "State of Residence": q3,
+                "Zip Code": q4,
+                "Ethnicity / Race": q5,
+                "Education": q6,
+                "Area Type": q7,
+                "Employment Status": q8,
+                "Occupation": q9,
+                "Industry": q10,
+                "Number of Children": q11,
+                "Household Size": q12,
+                "Household Income": q13,
+                "Presidential Vote": q14,
+                "Political Identification": q15,
+                "Religious Affiliation": q19,
+                "US Citizen": q20,
+                "Born in US": q21,
+                "Primary Language": q22,
+                "AI Use Frequency": q23
             }
+
             path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
             with open(path, "a") as f:
-                f.write("\n\n--- Questionnaire Responses ---\n")
-                for key, value in st.session_state["questionnaire_responses"].items():
+                f.write("\n\n--- Questionnaire 1 (Demographics) Responses ---\n")
+                for key, value in st.session_state["q1_responses"].items():
                     f.write(f"{key}: {value}\n")
-            st.success(config.complete_message_questionnaire)
+            st.success("Questionnaire 1 responses Saved")
+            st.session_state.qnsubmitted  = 1
 
 
+# Q2: personality questionnaire (Human Value Scale: ESS)
+# if condition: yes closing code + q1 submitted 
+if st.session_state.closing_code_found and st.session_state.qnsubmitted == 1:
+    with st.form("q2_form"):
+        st.markdown("### 📝 Questionnaires (2/9)")
 
-# add VALUE ORIENTATION MATRIX SECTION
-# if condition: no code + questionnaire submitted + matrix not submitted 
-if st.session_state.closing_code_found and st.session_state.questionnaire_submitted and not st.session_state.matrix_submitted:
-    
-    with st.form("matrix_questionnaire_form"):
-        st.markdown("### 🧭 Part 3: Value Orientation Questionnaire")
         st.write("Now I will briefly describe some people. Please use the slider to rank how much they are or are not like you.")
 
-        matrix_answers = {}
-        for key, question in config.likert_questions.items():
+        q2_answers = {}
+        for key, question in config.q2_qs.items():
             st.markdown(f"**({key})** {question}")
 
-            matrix_answers[key] = st.select_slider(
-                label="",
-                options=config.likert_labels,
+            q2_answers[key] = st.select_slider(
+                label="--------_",
+                options=config.q2_labels,
                 value=None,
-                key=f"matrix_slider_{key}",
+                key=f"matrix2_slider_{key}",
                 label_visibility="collapsed"
             )
 
+        st.info(config.submit_warning)
         submitted = st.form_submit_button("Submit")
         if submitted:
-            st.session_state.matrix_submitted = True
-            st.session_state.matrix_responses = matrix_answers
+            st.session_state.q2_responses = q2_answers
 
             path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
             with open(path, "a") as f:
-                f.write("\n\n--- Value Orientation Responses ---\n")
-                for key, value in st.session_state["matrix_responses"].items():
+                f.write("\n\n--- Questionnaire 2 (ESS) Responses  ---\n")
+                for key, value in st.session_state["q2_responses"].items():
                     f.write(f"{key}: {value}\n")
 
-            st.success(config.complete_message_valuematrix)
+            st.success("Questionnaire 2 responses Saved")
+            st.session_state.qnsubmitted  = 2
+
+
+# Q3: personality questionnaire (ATAS)
+# if condition: yes closing code + q2 submitted 
+if st.session_state.closing_code_found and st.session_state.qnsubmitted == 2:
+    with st.form("q3_form"):
+        st.markdown("### 📝 Questionnaires (3/9)")
+        st.write("Please respond to each prompt with the appropriate level of agreement per your personal feelings about yourself and technology.")
+
+        q3_answers = {}
+        for key, question in config.q3_qs.items():
+            st.markdown(f"**({key})** {question}")
+
+            q3_answers[key] = st.select_slider(
+                label="--------_",
+                options=config.q3_labels,
+                value=None,
+                key=f"matrix3_slider_{key}",
+                label_visibility="collapsed"
+            )
+
+        st.info(config.submit_warning)
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            st.session_state.q3_responses = q3_answers
+
+            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
+            with open(path, "a") as f:
+                f.write("\n\n--- Questionnaire 3 (ATAS) Responses ---\n")
+                for key, value in st.session_state["q3_responses"].items():
+                    f.write(f"{key}: {value}\n")
+
+            st.success("Questionnaire 3 responses Saved")
+            st.session_state.qnsubmitted  = 3
+
+
+# Q4: personality questionnaire (ASKU)
+# if condition: yes closing code + q3 submitted 
+if st.session_state.closing_code_found and st.session_state.qnsubmitted == 3:
+    with st.form("q4_form"):
+        st.markdown("### 📝 Questionnaires (4/9)")
+        st.write("The following statements may apply more or less to you. To what extent do you think each statement applies to you personally?")
+        q4_answers = {}
+        for key, question in config.q4_qs.items():
+            st.markdown(f"**({key})** {question}")
+
+            q4_answers[key] = st.select_slider(
+                label="--------_",
+                options=config.q4_labels,
+                value=None,
+                key=f"matrix4_slider_{key}",
+                label_visibility="collapsed"
+            )
+
+        st.info(config.submit_warning)
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            st.session_state.q4_responses = q4_answers
+
+            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
+            with open(path, "a") as f:
+                f.write("\n\n--- Questionnaire 4 (ASKU) Responses ---\n")
+                for key, value in st.session_state["q4_responses"].items():
+                    f.write(f"{key}: {value}\n")
+
+            st.success("Questionnaire 4 responses Saved")
+            st.session_state.qnsubmitted  = 4
+
+
+# Q5: personality questionnaire (IE-4)
+# if condition: yes closing code + q4 submitted 
+if st.session_state.closing_code_found and st.session_state.qnsubmitted == 4:
+    with st.form("q5_form"):
+        st.markdown("### 📝 Questionnaires (5/9)")
+        st.write("The following statements may apply more or less to you. To what extent do you think each statement applies to you personally?")
+        q5_answers = {}
+        for key, question in config.q5_qs.items():
+            st.markdown(f"**({key})** {question}")
+
+            q5_answers[key] = st.select_slider(
+                label="--------_",
+                options=config.q5_labels,
+                value=None,
+                key=f"matrix5_slider_{key}",
+                label_visibility="collapsed"
+            )
+
+        st.info(config.submit_warning)
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            st.session_state.q5_responses = q5_answers
+
+            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
+            with open(path, "a") as f:
+                f.write("\n\n--- Questionnaire 5 (IE-4) Responses ---\n")
+                for key, value in st.session_state["q5_responses"].items():
+                    f.write(f"{key}: {value}\n")
+
+            st.success("Questionnaire 5 responses Saved")
+            st.session_state.qnsubmitted  = 5
+
+
+# Q6: personality questionnaire (L-1)
+# if condition: yes closing code + q5 submitted 
+if st.session_state.closing_code_found and st.session_state.qnsubmitted == 5:
+    with st.form("q6_form"):
+        st.markdown("### 📝 Questionnaires (6/9)")
+        st.write("The next question is about your general satisfaction with life.")
+        q6_answers = {}
+        for key, question in config.q6_qs.items():
+            st.markdown(f"**({key})** {question}")
+
+            q6_answers[key] = st.select_slider(
+                label="--------_",
+                options=config.q6_labels,
+                value=None,
+                key=f"matrix6_slider_{key}",
+                label_visibility="collapsed"
+            )
+
+        st.info(config.submit_warning)
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            st.session_state.q6_responses = q6_answers
+
+            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
+            with open(path, "a") as f:
+                f.write("\n\n--- Questionnaire 6 (L-1) Responses ---\n")
+                for key, value in st.session_state["q6_responses"].items():
+                    f.write(f"{key}: {value}\n")
+
+            st.success("Questionnaire 6 responses Saved")
+            st.session_state.qnsubmitted  = 6
+
+
+# Q7: personality questionnaire (BFI-10)
+# if condition: yes closing code + q6 submitted 
+if st.session_state.closing_code_found and st.session_state.qnsubmitted == 6:
+    with st.form("q7_form"):
+        st.markdown("### 📝 Questionnaires (7/9)")
+        st.write("How well do the following statements describe your personality? I see myself as someone who…")
+
+        q7_answers = {}
+        for key, question in config.q7_qs.items():
+            st.markdown(f"**({key})** {question}")
+
+            q7_answers[key] = st.select_slider(
+                label="--------_",
+                options=config.q7_labels,
+                value=None,
+                key=f"matrix7_slider_{key}",
+                label_visibility="collapsed"
+            )
+
+        st.info(config.submit_warning)
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            st.session_state.q7_responses = q7_answers
+
+            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
+            with open(path, "a") as f:
+                f.write("\n\n--- Questionnaire 7 (BFI-10) Responses  ---\n")
+                for key, value in st.session_state["q7_responses"].items():
+                    f.write(f"{key}: {value}\n")
+
+            st.success("Questionnaire 7 responses Saved")
+            st.session_state.qnsubmitted  = 7
+
+
+# Q8: personality questionnaire (ICT-SC25e)
+# if condition: yes closing code + q7 submitted 
+if st.session_state.closing_code_found and st.session_state.qnsubmitted == 7:
+    with st.form("q8_form"):
+        st.markdown("### 📝 Questionnaires (8/9)")
+        st.write("In the following, you will be asked questions about the handling of digital systems. Digital systems are all digital applications (e.g., software or apps) and all digital devices (e.g., computers or smartphones).")
+
+        q8_answers = {}
+        for key, question in config.q8_qs.items():
+            st.markdown(f"**({key})** {question}")
+
+            q8_answers[key] = st.select_slider(
+                label="--------_",
+                options=config.q8_labels,
+                value=None,
+                key=f"matrix8_slider_{key}",
+                label_visibility="collapsed"
+            )
+
+        st.info(config.submit_warning)
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            st.session_state.q8_responses = q8_answers
+
+            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
+            with open(path, "a") as f:
+                f.write("\n\n--- Questionnaire 8 (ICT-SC25e) Responses  ---\n")
+                for key, value in st.session_state["q8_responses"].items():
+                    f.write(f"{key}: {value}\n")
+
+            st.success("Questionnaire 8 responses Saved")
+            st.session_state.qnsubmitted  = 8
+
+
+# Q9: personality questionnaire (Technophobie)
+# if condition: yes closing code + q8 submitted 
+if st.session_state.closing_code_found and st.session_state.qnsubmitted == 8:
+    with st.form("q9_form"):
+        st.markdown("### 📝 Questionnaires (9/9)")
+        st.write("Please indicate by marking the appropriate number between 1 and 5 how much these statements apply to you. Assign the value 1 if the statement applies strongly to you (applies strongly) and the value 5 if the statement does not apply to you at all (does not apply at all).")
+
+        q9_answers = {}
+        for key, question in config.q9_qs.items():
+            st.markdown(f"**({key})** {question}")
+
+            q9_answers[key] = st.select_slider(
+                label="--------_",
+                options=config.q9_labels,
+                value=None,
+                key=f"matrix9_slider_{key}",
+                label_visibility="collapsed"
+            )
+
+        st.info(config.submit_warning)
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+            st.session_state.q9_responses = q9_answers
+
+            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
+            with open(path, "a") as f:
+                f.write("\n\n--- Questionnaire 9 (Technophobie) Responses  ---\n")
+                for key, value in st.session_state["q9_responses"].items():
+                    f.write(f"{key}: {value}\n")
+
+            st.success("Questionnaire 9 responses Saved")
+            st.session_state.qnsubmitted  = 9
 
 
 
 # provide prolific redirection link 
-if st.session_state.closing_code_found and st.session_state.questionnaire_submitted and st.session_state.matrix_submitted:
-    st.success("You have completed the study.")
-    st.write("Please click the button below to return to Prolific and submit your completion code.")
-
+# if condition: yes closing code + q9 submitted  
+if st.session_state.closing_code_found and st.session_state.qnsubmitted == 9:
+    st.success("You have completed the study. Please return to Prolific and submit your completion code.")
     if st.button("Return to Prolific"):
         st.markdown(
             f'<meta http-equiv="refresh" content="0; url={config.prolific_completion_url}">',
