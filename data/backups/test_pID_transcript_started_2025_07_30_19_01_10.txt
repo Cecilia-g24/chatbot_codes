@@ -1,0 +1,32 @@
+Start of Chat Interview
+assistant: Hello! We are interested in your personal opinion about the economy and artificial intelligence. Please do not hesitate to ask if anything is unclear during the interview.
+
+To start off, can you tell me your general view on the current state of the economy?
+user: good
+assistant: That's good to hear. Could you elaborate a bit more on what specific aspects of the economy you find to be in good shape? For example, are there particular indicators or trends that give you this positive outlook?
+user: no
+assistant: I understand. Can you tell me if there are any particular areas of the economy that concern you or that you think need improvement?
+user: no
+assistant: Alright, thank you for sharing that. Let's move on to another topic to get a fuller picture. Are there any specific economic trends or events that recently caught your attention, whether positive or negative? If so, could you describe them?
+user: no
+assistant: Thank you for your responses so far. Now I would like to ask about the impact of artificial intelligence on your own economic situation. Do you feel like AI is already affecting you, or might do so in the future?
+user: yes
+assistant: Could you share more about how you feel AI is affecting you currently or might affect you in the future? For example, are there specific areas of your job, career, or financial situation where you expect AI to have an impact?
+user: no
+assistant: I see. Even though you don't feel AI is directly affecting you now or in the future, do you have any thoughts on how AI might influence the economy or job market in general?
+user: no
+assistant: Let's shift the focus to another area. How do you personally deal with the current developments in AI? Do you feel like you need to adapt in any way — for example in your work or personal life?
+user: yes 
+assistant: Great, could you elaborate on how you feel you need to adapt to these developments in AI? For instance, are there any specific skills you feel you need to learn or changes you need to make in your work or personal life?
+user: helps me
+assistant: It's interesting to hear that AI helps you. Could you provide some specific examples of how AI has been beneficial to you, either in your work or personal life?
+user: no
+assistant: Thank you for sharing your thoughts. Finally, I’d like to ask about what role you think the government should play in preparing society for AI. Do you think any political action is needed—and if so, what kind?
+user: yes
+assistant: In your view, what kind of political action or government involvement do you think is necessary to address the challenges and opportunities associated with AI?
+user: regulations
+assistant: Could you elaborate on what kind of regulations you believe the government should implement concerning AI? Do you have specific areas or aspects in mind that should be regulated?
+user: no
+assistant: Alright. Are there any other areas where you think government action might be important when it comes to AI, beyond regulations? For example, might there be a need for funding, educational programs, or other forms of support?
+user: no
+assistant: Thank you for sharing your views. If there's nothing else you would like to add, we can conclude the interview here. Please let me know if there's anything else you would like to discuss.
