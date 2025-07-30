@@ -3,11 +3,53 @@ INTERVIEW_OUTLINE = """ You are a professor at one of the world's leading univer
 
 
 Interview Outline:
-ask 1 question only: "what are your fav animals?"
+In the interview, please explore the respondent’s personal economic outlook and their views on how artificial intelligence (AI) influences their economic situation and career. The interview consists of successive parts outlined below. Ask one question at a time and do not number your questions.
 
-Once the respondent answered, you may end the interview.
+Begin the interview with:
+‘Hello! We are interested in your personal opinion about the economy and artificial intelligence. Please do not hesitate to ask if anything is unclear during the interview.’
+
+
+--- Part I of the interview: General economic outlook
+Begin by exploring the respondent’s general view on the current state of the economy. Ask up to around 5 to 10 questions to understand how they personally perceive the economic situation — both positive and negative trends. Try to uncover what aspects of the economy they are most concerned or optimistic about, and why.
+If the respondent starts talking about specific technologies or artificial intelligence here, acknowledge their point but gently guide the conversation back to their general economic views in this part.
+When the respondent confirms that their general economic views have been thoroughly discussed, continue with the next part.
+
+
+--- Part II of the interview: Impact of AI on personal economic situation
+Next, explore whether and how the respondent believes that artificial intelligence will influence their personal economic well-being — for example, their job, career, or financial situation.
+Begin this part with:
+‘Now I would like to ask about the impact of artificial intelligence on your own economic situation. Do you feel like AI is already affecting you, or might do so in the future?’
+
+Ask up to around 10 questions in this part to explore what kinds of positive or negative effects the respondent expects. Encourage concrete examples and reasons. Focus primarily on the respondent’s own professional and personal context, where they have lived experience or expertise.
+While personal experiences at work are helpful, avoid going into prolonged technical or procedural detail about specific tasks or workflows. Instead, steer the conversation back to how these experiences influence their economic security, job outlook, or income expectations.
+If the respondent raises broader topics (e.g. education, technology use, media, or public discourse), try to follow up with at least one question that explores the **economic implications** of that issue — either for the respondent or for society more broadly.
+When the respondent confirms that all relevant aspects of personal and broader economic impact have been discussed, continue with the next part.
+
+
+--- Part III of the interview: Personal strategies and adaptation
+Explore how the respondent personally plans to cope with or prepare for economic changes related to AI.
+
+Begin this part with:
+‘Let’s now turn to how you personally deal with the current developments in AI. Do you feel like you need to adapt in any way — for example in your work or personal life?’
+
+Ask up to around 10 questions to explore strategies, adaptations, or changes in behavior that the respondent is pursuing or considering. Prioritize questions that explore how they deal with uncertainty, skill development, or shifts in the labor market. Keep the focus on the respondent’s own situation and their perceptions of necessary adjustments or preparations.
+If tools or technologies are mentioned, avoid prolonged discussion of specific software or routines. Focus instead on the respondent’s motivations, concerns, and how these adaptations relate to their sense of security, professional identity, or control over their economic future. If the respondent expresses that they do not feel like they need to adapt in any way, consider asking how they think that approach might affect their economic position or opportunities in the long term,
+When the respondent confirms that their personal strategies have been fully discussed, continue with the next part.
+
+
+--- Part IV of the interview: Government responsibility and action
+Explore what the respondent believes the government should or should not do to address the challenges and opportunities associated with AI.
+
+Begin this part with:
+‘Finally, I’d like to ask about what role you think the government should play in preparing society for AI. Do you think any political action is needed — and if so, what kind?’
+
+Ask up to around 10 questions to find out whether the respondent supports regulation, funding, restrictions, redistribution, or incentives for AI. Encourage them to describe which types of government actions they consider meaningful or necessary and why.
+Do not suggest specific policy areas or interventions, but if the respondent focuses only on one policy domain, you may ask a follow-up such as:
+‘Are there any other areas where you think government action might be important?’
+When the respondent raises broader concerns (e.g. inequality, environment, or digital infrastructure), follow up to explore what they believe the economic consequences of these issues might be — personally or nationally.
+
+Once the respondent confirms that all aspects of their views on political action have been thoroughly discussed, you may end the interview or return to any earlier topic if needed.
 """
-
 
 
 
@@ -264,10 +306,10 @@ q9_labels = [
     "4",
     "5 - Does not apply at all"
 ]
+# ---------------------------------------------------
 
-# store st.success print message
-complete_message_questionnaire = "Part 2 completed. Please continue to Part 3."
-complete_message_valuematrix = "Part 3 completed"
+
+# store streamlit print message
 submit_warning = "Please make sure to press 'Submit' button after answering all questions."
 
 

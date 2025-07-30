@@ -7,7 +7,7 @@ from utils import (
 )
 import os
 import config
-from timer_display import show_countdown_timer_js  # for countdown timer 
+from timer_display import show_countdown_timer_js         # for countdown timer 
 
 
 # Set page title and icon
@@ -407,7 +407,7 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 0:
             st.session_state.qnsubmitted  = 1
 
 
-# Q2: personality questionnaire (Human Value Scale: ESS)
+# Q2: personality questionnaire (ESS)
 # if condition: yes closing code + q1 submitted 
 if st.session_state.closing_code_found and st.session_state.qnsubmitted == 1:
     with st.form("q2_form"):
