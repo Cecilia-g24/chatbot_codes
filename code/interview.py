@@ -173,13 +173,13 @@ if not st.session_state.messages:
 
 # If time is up, end the interview
 #if remaining_time <= 0 and st.session_state.interview_active:
-    st.session_state.interview_active = False
-    st.markdown("⏰ **Time is up. The interview has been terminated automatically.**")
-    save_interview_data(
-        username=st.session_state.username,
-        transcripts_directory=config.TRANSCRIPTS_DIRECTORY,
-        times_directory=config.TIMES_DIRECTORY,
-    )
+    #st.session_state.interview_active = False
+    #st.markdown("⏰ **Time is up. The interview has been terminated automatically.**")
+    #save_interview_data(
+        #username=st.session_state.username,
+        #transcripts_directory=config.TRANSCRIPTS_DIRECTORY,
+        #times_directory=config.TIMES_DIRECTORY,
+    #)
 
 
 
