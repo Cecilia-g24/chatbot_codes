@@ -10,6 +10,12 @@ import config
 from timer_display import show_countdown_timer_js         # for countdown timer 
 
 
+##############################################
+# Test switch (True = test mode with password login, False = Prolific mode)
+test_Mode = True
+##############################################
+
+
 # Set page title and icon
 st.set_page_config(page_title="NIM Interview", page_icon=config.AVATAR_INTERVIEWER)
 
@@ -40,8 +46,8 @@ else:
 # show_countdown_timer_js(timer_seconds=config.TIME_SETTING)
 
 
-# Check if usernames and logins are enabled
-if config.LOGINS:
+# Check if usernames and config.logins (always True) and Prolific_mode are enabled
+if config.LOGINS and test_Mode:
     pwd_correct, username = check_password()
     if not pwd_correct:
         st.stop()

@@ -1,0 +1,163 @@
+Start of Chat Interview
+assistant: Hello! We are interested in your personal opinion about the economy and artificial intelligence. Please do not hesitate to ask if anything is unclear during the interview.
+
+To start, how do you perceive the current state of the economy? Are there any positive or negative trends that stand out to you?
+user: no
+assistant: That's perfectly fine. Could you perhaps share whether there are any economic issues or topics that you find particularly concerning or promising right now?
+user: no
+assistant: Alright, I understand. Let's move on then.
+
+Now I would like to ask about the impact of artificial intelligence on your own economic situation. Do you feel like AI is already affecting you, or might do so in the future?
+user: no
+assistant: Thank you for your response. Since it seems AI is not a significant factor for you at the moment, let's explore a bit further.
+
+Do you think it's possible that AI could influence your economic situation in any way in the future, even if it's not apparent right now? If so, how? If not, why not?
+user: no
+assistant: Thank you for your brief responses. Let's move on to the next topic.
+
+Let’s now turn to how you personally deal with the current developments in AI. Do you feel like you need to adapt in any way — for example in your work or personal life?
+user: no
+assistant: Alright, thank you for your straightforward answers. Let's proceed to the final part.
+
+Finally, I’d like to ask about what role you think the government should play in preparing society for AI. Do you think any political action is needed — and if so, what kind?
+user: no
+assistant: Understood. As you’ve chosen not to provide specific responses, we will conclude the interview here.
+
+Thank you for your time.
+
+666_complete_interview
+assistant: Thank you for your responses. It was nice talking with you. Please proceed to fill out the following questionnaires.
+
+
+--- Questionnaire 1 (Demographics) Responses ---
+Age: 66
+Gender: Male
+State of Residence: Alabama
+Ethnicity / Race: White
+Education: Less than high school
+Area Type: Urban
+Employment Status: Employed full-time (more than 30 hrs/week)
+Occupation: Student
+Industry: Agriculture, Forestry, Fishing
+Number of Children: 0
+Household Size: 1
+Household Income: Less than $10,000
+Presidential Vote: Donald Trump
+Political Identification: Democrat
+Religious Affiliation: None
+US Citizen: Yes
+Born in US: Yes
+Primary Language: English
+AI Use Frequency: Multiple times a day
+
+
+--- Questionnaire 2 (ESS) Responses  ---
+1: Very much like me
+2: Very much like me
+3: Very much like me
+4: Very much like me
+5: Very much like me
+6: Very much like me
+7: Very much like me
+8: Very much like me
+9: Very much like me
+10: Very much like me
+11: Very much like me
+12: Very much like me
+13: Very much like me
+14: Very much like me
+15: Very much like me
+16: Very much like me
+17: Very much like me
+18: Very much like me
+19: Very much like me
+20: Very much like me
+21: Very much like me
+
+
+--- Questionnaire 3 (ATAS) Responses ---
+1: Strongly Disagree
+2: Strongly Disagree
+3: Strongly Disagree
+4: Strongly Disagree
+5: Strongly Disagree
+6: Strongly Disagree
+7: Strongly Disagree
+8: Strongly Disagree
+9: Strongly Disagree
+10: Strongly Disagree
+11: Strongly Disagree
+
+
+--- Questionnaire 4 (ASKU) Responses ---
+1: 1 - Doesn't apply at all
+2: 1 - Doesn't apply at all
+3: 1 - Doesn't apply at all
+
+
+--- Questionnaire 5 (IE-4) Responses ---
+1: 1 - Does not apply at all
+2: 1 - Does not apply at all
+3: 1 - Does not apply at all
+4: 1 - Does not apply at all
+
+
+--- Questionnaire 6 (L-1) Responses ---
+1: 1 - not at all satisfied
+
+
+--- Questionnaire 7 (BFI-10) Responses  ---
+1: 1 - Disagree strongly
+2: 1 - Disagree strongly
+3: 1 - Disagree strongly
+4: 1 - Disagree strongly
+5: 1 - Disagree strongly
+6: 1 - Disagree strongly
+7: 1 - Disagree strongly
+8: 1 - Disagree strongly
+9: 1 - Disagree strongly
+10: 1 - Disagree strongly
+
+
+--- Questionnaire 8 (ICT-SC25e) Responses  ---
+1: Strongly disagree
+2: Strongly disagree
+3: Strongly disagree
+4: Strongly disagree
+5: Strongly disagree
+6: Strongly disagree
+7: Strongly disagree
+8: Strongly disagree
+9: Strongly disagree
+10: Strongly disagree
+11: Strongly disagree
+12: Strongly disagree
+13: Strongly disagree
+14: Strongly disagree
+15: Strongly disagree
+16: Strongly disagree
+17: Strongly disagree
+18: Strongly disagree
+19: Strongly disagree
+20: Strongly disagree
+21: Strongly disagree
+22: Strongly disagree
+23: Strongly disagree
+24: Strongly disagree
+25: Strongly disagree
+
+
+--- Questionnaire 9 (Technophobie) Responses  ---
+1: 1 - Applies strongly
+2: 1 - Applies strongly
+3: 1 - Applies strongly
+4: 1 - Applies strongly
+5: 1 - Applies strongly
+6: 1 - Applies strongly
+7: 1 - Applies strongly
+8: 1 - Applies strongly
+9: 1 - Applies strongly
+10: 1 - Applies strongly
+11: 1 - Applies strongly
+12: 1 - Applies strongly
+13: 1 - Applies strongly
