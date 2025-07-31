@@ -166,10 +166,10 @@ if not st.session_state.messages:
 
 # Show warning if less than 60 seconds left and interview still active
 #if 0 < remaining_time <= 60 and st.session_state.interview_active:
-    st.warning(
-        f"⚠️ Only {remaining_time} seconds left for Part 1. Please wrap up your response.",
-        icon="⚠️"
-    )
+    #st.warning(
+        #f"⚠️ Only {remaining_time} seconds left for Part 1. Please wrap up your response.",
+        #icon="⚠️"
+    #)
 
 # If time is up, end the interview
 #if remaining_time <= 0 and st.session_state.interview_active:
