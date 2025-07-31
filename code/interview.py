@@ -37,7 +37,7 @@ else:
 
 
 # show timer on screen, function imported from timer_display.py
-show_countdown_timer_js(timer_seconds=config.TIME_SETTING)
+# show_countdown_timer_js(timer_seconds=config.TIME_SETTING)
 
 
 # Check if usernames and logins are enabled
@@ -161,18 +161,18 @@ if not st.session_state.messages:
 
 
 # --- Add time-out and warning logic ---
-elapsed_time = int(time.time() - st.session_state.start_time)
-remaining_time = config.TIME_SETTING - elapsed_time
+#elapsed_time = int(time.time() - st.session_state.start_time)
+#remaining_time = config.TIME_SETTING - elapsed_time
 
 # Show warning if less than 60 seconds left and interview still active
-if 0 < remaining_time <= 60 and st.session_state.interview_active:
+#if 0 < remaining_time <= 60 and st.session_state.interview_active:
     st.warning(
         f"⚠️ Only {remaining_time} seconds left for Part 1. Please wrap up your response.",
         icon="⚠️"
     )
 
 # If time is up, end the interview
-if remaining_time <= 0 and st.session_state.interview_active:
+#if remaining_time <= 0 and st.session_state.interview_active:
     st.session_state.interview_active = False
     st.markdown("⏰ **Time is up. The interview has been terminated automatically.**")
     save_interview_data(
