@@ -122,17 +122,18 @@ if interview_previously_completed and not st.session_state.messages:
 #            config.TIMES_DIRECTORY,
 #        )
 
-
-# Upon rerun, display the previous conversation (except system prompt or first message)
-for message in st.session_state.messages[1:]:
-    if message["role"] == "assistant":
-        avatar = config.AVATAR_INTERVIEWER
-    else:
-        avatar = config.AVATAR_RESPONDENT
-    # Only display messages without codes
-    if not any(code in message["content"] for code in config.CLOSING_MESSAGES.keys()):
-        with st.chat_message(message["role"], avatar=avatar):
-            st.markdown(message["content"])
+# Show previous messages **only if** the interview is still active
+if st.session_state.interview_active:
+    # Upon rerun, display the previous conversation (except system prompt or first message)
+    for message in st.session_state.messages[1:]:
+        if message["role"] == "assistant":
+            avatar = config.AVATAR_INTERVIEWER
+        else:
+            avatar = config.AVATAR_RESPONDENT
+        # Only display messages without codes
+        if not any(code in message["content"] for code in config.CLOSING_MESSAGES.keys()):
+            with st.chat_message(message["role"], avatar=avatar):
+                st.markdown(message["content"])
 
 # Load API client
 if api == "openai":
