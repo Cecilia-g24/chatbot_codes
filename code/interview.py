@@ -409,6 +409,7 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 0:
                     f.write(f"{key}: {value}\n")
             st.success("Questionnaire 1 responses Saved")
             st.session_state.qnsubmitted  = 1
+            st.rerun()
 
 
 # Q2: personality questionnaire (ESS)
@@ -444,6 +445,7 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 1:
 
             st.success("Questionnaire 2 responses Saved")
             st.session_state.qnsubmitted  = 2
+            st.rerun()
 
 
 # Q3: personality questionnaire (ATAS)
@@ -478,6 +480,7 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 2:
 
             st.success("Questionnaire 3 responses Saved")
             st.session_state.qnsubmitted  = 3
+            st.rerun()
 
 
 # Q4: personality questionnaire (ASKU)
@@ -511,6 +514,7 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 3:
 
             st.success("Questionnaire 4 responses Saved")
             st.session_state.qnsubmitted  = 4
+            st.rerun()
 
 
 # Q5: personality questionnaire (IE-4)
@@ -544,6 +548,7 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 4:
 
             st.success("Questionnaire 5 responses Saved")
             st.session_state.qnsubmitted  = 5
+            st.rerun()
 
 
 # Q6: personality questionnaire (L-1)
@@ -577,6 +582,7 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 5:
 
             st.success("Questionnaire 6 responses Saved")
             st.session_state.qnsubmitted  = 6
+            st.rerun()
 
 
 # Q7: personality questionnaire (BFI-10)
@@ -611,6 +617,7 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 6:
 
             st.success("Questionnaire 7 responses Saved")
             st.session_state.qnsubmitted  = 7
+            st.rerun()
 
 
 # Q8: personality questionnaire (ICT-SC25e)
@@ -645,6 +652,7 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 7:
 
             st.success("Questionnaire 8 responses Saved")
             st.session_state.qnsubmitted  = 8
+            st.rerun()
 
 
 # Q9: personality questionnaire (Technophobie)
@@ -679,6 +687,7 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 8:
 
             st.success("Questionnaire 9 responses Saved")
             st.session_state.qnsubmitted  = 9
+            st.rerun()
 
 
 
