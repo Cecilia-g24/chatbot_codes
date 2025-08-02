@@ -403,282 +403,44 @@ if st.session_state.interview_active == False  and st.session_state.qnsubmitted 
             st.rerun()
 
 
-# Q2: personality questionnaire (ESS)
-# if condition: yes closing code + q1 submitted 
-if st.session_state.closing_code_found and st.session_state.qnsubmitted == 1:
-    with st.form("q2_form"):
-        st.markdown("### 📝 Questionnaires (2/9)")
+for q in config.QUESTIONNAIRES:
+    if st.session_state.get("closing_code_found") and st.session_state.get("qnsubmitted") == q["id"] - 1:
 
-        st.write("Now I will briefly describe some people. Please use the slider to rank how much they are or are not like you.")
+        with st.form(f"q{q['id']}_form"):
+            st.markdown(f"### 📝 Questionnaires ({q['id']}/9)")
+            st.write(q["instructions"])
 
-        q2_answers = {}
-        for key, question in config.q2_qs.items():
-            st.markdown(f"**({key})** {question}")
+            answers = {}
+            questions = getattr(config, q["qs"])
+            labels = getattr(config, q["labels"])
 
-            q2_answers[key] = st.select_slider(
-                label="--------_",
-                options=config.q2_labels,
-                value=None,
-                key=f"matrix2_slider_{key}",
-                label_visibility="collapsed"
-            )
+            for key, question in questions.items():
+                st.markdown(f"**({key})** {question}")
+                answers[key] = st.radio(
+                    label="--------_",
+                    options=labels,
+                    index=None,
+                    key=f"matrix{q['id']}_radio_{key}",
+                    label_visibility="collapsed"
+                )
 
-        st.info(config.submit_warning)
-        submitted = st.form_submit_button("Submit")
+            st.info(config.submit_warning)
+            submitted = st.form_submit_button("Submit")
+
         if submitted:
-            st.session_state.q2_responses = q2_answers
+            response_key = f"q{q['id']}_responses"
+            st.session_state[response_key] = answers
 
             path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
             with open(path, "a") as f:
-                f.write("\n\n--- Questionnaire 2 (ESS) Responses  ---\n")
-                for key, value in st.session_state["q2_responses"].items():
+                f.write(f"\n\n--- {q['title']} Responses ---\n")
+                for key, value in st.session_state[response_key].items():
                     f.write(f"{key}: {value}\n")
 
-            st.success("Questionnaire 2 responses Saved")
-            st.session_state.qnsubmitted  = 2
+            st.success(f"{q['title']} responses Saved")
+            st.session_state.qnsubmitted = q["id"]
             st.rerun()
 
-
-# Q3: personality questionnaire (ATAS)
-# if condition: yes closing code + q2 submitted 
-if st.session_state.closing_code_found and st.session_state.qnsubmitted == 2:
-    with st.form("q3_form"):
-        st.markdown("### 📝 Questionnaires (3/9)")
-        st.write("Please respond to each prompt with the appropriate level of agreement per your personal feelings about yourself and technology.")
-
-        q3_answers = {}
-        for key, question in config.q3_qs.items():
-            st.markdown(f"**({key})** {question}")
-
-            q3_answers[key] = st.select_slider(
-                label="--------_",
-                options=config.q3_labels,
-                value=None,
-                key=f"matrix3_slider_{key}",
-                label_visibility="collapsed"
-            )
-
-        st.info(config.submit_warning)
-        submitted = st.form_submit_button("Submit")
-        if submitted:
-            st.session_state.q3_responses = q3_answers
-
-            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
-            with open(path, "a") as f:
-                f.write("\n\n--- Questionnaire 3 (ATAS) Responses ---\n")
-                for key, value in st.session_state["q3_responses"].items():
-                    f.write(f"{key}: {value}\n")
-
-            st.success("Questionnaire 3 responses Saved")
-            st.session_state.qnsubmitted  = 3
-            st.rerun()
-
-
-# Q4: personality questionnaire (ASKU)
-# if condition: yes closing code + q3 submitted 
-if st.session_state.closing_code_found and st.session_state.qnsubmitted == 3:
-    with st.form("q4_form"):
-        st.markdown("### 📝 Questionnaires (4/9)")
-        st.write("The following statements may apply more or less to you. To what extent do you think each statement applies to you personally?")
-        q4_answers = {}
-        for key, question in config.q4_qs.items():
-            st.markdown(f"**({key})** {question}")
-
-            q4_answers[key] = st.select_slider(
-                label="--------_",
-                options=config.q4_labels,
-                value=None,
-                key=f"matrix4_slider_{key}",
-                label_visibility="collapsed"
-            )
-
-        st.info(config.submit_warning)
-        submitted = st.form_submit_button("Submit")
-        if submitted:
-            st.session_state.q4_responses = q4_answers
-
-            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
-            with open(path, "a") as f:
-                f.write("\n\n--- Questionnaire 4 (ASKU) Responses ---\n")
-                for key, value in st.session_state["q4_responses"].items():
-                    f.write(f"{key}: {value}\n")
-
-            st.success("Questionnaire 4 responses Saved")
-            st.session_state.qnsubmitted  = 4
-            st.rerun()
-
-
-# Q5: personality questionnaire (IE-4)
-# if condition: yes closing code + q4 submitted 
-if st.session_state.closing_code_found and st.session_state.qnsubmitted == 4:
-    with st.form("q5_form"):
-        st.markdown("### 📝 Questionnaires (5/9)")
-        st.write("The following statements may apply more or less to you. To what extent do you think each statement applies to you personally?")
-        q5_answers = {}
-        for key, question in config.q5_qs.items():
-            st.markdown(f"**({key})** {question}")
-
-            q5_answers[key] = st.select_slider(
-                label="--------_",
-                options=config.q5_labels,
-                value=None,
-                key=f"matrix5_slider_{key}",
-                label_visibility="collapsed"
-            )
-
-        st.info(config.submit_warning)
-        submitted = st.form_submit_button("Submit")
-        if submitted:
-            st.session_state.q5_responses = q5_answers
-
-            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
-            with open(path, "a") as f:
-                f.write("\n\n--- Questionnaire 5 (IE-4) Responses ---\n")
-                for key, value in st.session_state["q5_responses"].items():
-                    f.write(f"{key}: {value}\n")
-
-            st.success("Questionnaire 5 responses Saved")
-            st.session_state.qnsubmitted  = 5
-            st.rerun()
-
-
-# Q6: personality questionnaire (L-1)
-# if condition: yes closing code + q5 submitted 
-if st.session_state.closing_code_found and st.session_state.qnsubmitted == 5:
-    with st.form("q6_form"):
-        st.markdown("### 📝 Questionnaires (6/9)")
-        st.write("The next question is about your general satisfaction with life.")
-        q6_answers = {}
-        for key, question in config.q6_qs.items():
-            st.markdown(f"**({key})** {question}")
-
-            q6_answers[key] = st.select_slider(
-                label="--------_",
-                options=config.q6_labels,
-                value=None,
-                key=f"matrix6_slider_{key}",
-                label_visibility="collapsed"
-            )
-
-        st.info(config.submit_warning)
-        submitted = st.form_submit_button("Submit")
-        if submitted:
-            st.session_state.q6_responses = q6_answers
-
-            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
-            with open(path, "a") as f:
-                f.write("\n\n--- Questionnaire 6 (L-1) Responses ---\n")
-                for key, value in st.session_state["q6_responses"].items():
-                    f.write(f"{key}: {value}\n")
-
-            st.success("Questionnaire 6 responses Saved")
-            st.session_state.qnsubmitted  = 6
-            st.rerun()
-
-
-# Q7: personality questionnaire (BFI-10)
-# if condition: yes closing code + q6 submitted 
-if st.session_state.closing_code_found and st.session_state.qnsubmitted == 6:
-    with st.form("q7_form"):
-        st.markdown("### 📝 Questionnaires (7/9)")
-        st.write("How well do the following statements describe your personality? I see myself as someone who…")
-
-        q7_answers = {}
-        for key, question in config.q7_qs.items():
-            st.markdown(f"**({key})** {question}")
-
-            q7_answers[key] = st.select_slider(
-                label="--------_",
-                options=config.q7_labels,
-                value=None,
-                key=f"matrix7_slider_{key}",
-                label_visibility="collapsed"
-            )
-
-        st.info(config.submit_warning)
-        submitted = st.form_submit_button("Submit")
-        if submitted:
-            st.session_state.q7_responses = q7_answers
-
-            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
-            with open(path, "a") as f:
-                f.write("\n\n--- Questionnaire 7 (BFI-10) Responses  ---\n")
-                for key, value in st.session_state["q7_responses"].items():
-                    f.write(f"{key}: {value}\n")
-
-            st.success("Questionnaire 7 responses Saved")
-            st.session_state.qnsubmitted  = 7
-            st.rerun()
-
-
-# Q8: personality questionnaire (ICT-SC25e)
-# if condition: yes closing code + q7 submitted 
-if st.session_state.closing_code_found and st.session_state.qnsubmitted == 7:
-    with st.form("q8_form"):
-        st.markdown("### 📝 Questionnaires (8/9)")
-        st.write("In the following, you will be asked questions about the handling of digital systems. Digital systems are all digital applications (e.g., software or apps) and all digital devices (e.g., computers or smartphones).")
-
-        q8_answers = {}
-        for key, question in config.q8_qs.items():
-            st.markdown(f"**({key})** {question}")
-
-            q8_answers[key] = st.select_slider(
-                label="--------_",
-                options=config.q8_labels,
-                value=None,
-                key=f"matrix8_slider_{key}",
-                label_visibility="collapsed"
-            )
-
-        st.info(config.submit_warning)
-        submitted = st.form_submit_button("Submit")
-        if submitted:
-            st.session_state.q8_responses = q8_answers
-
-            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
-            with open(path, "a") as f:
-                f.write("\n\n--- Questionnaire 8 (ICT-SC25e) Responses  ---\n")
-                for key, value in st.session_state["q8_responses"].items():
-                    f.write(f"{key}: {value}\n")
-
-            st.success("Questionnaire 8 responses Saved")
-            st.session_state.qnsubmitted  = 8
-            st.rerun()
-
-
-# Q9: personality questionnaire (Technophobie)
-# if condition: yes closing code + q8 submitted 
-if st.session_state.closing_code_found and st.session_state.qnsubmitted == 8:
-    with st.form("q9_form"):
-        st.markdown("### 📝 Questionnaires (9/9)")
-        st.write("Please indicate by marking the appropriate number between 1 and 5 how much these statements apply to you. Assign the value 1 if the statement applies strongly to you (applies strongly) and the value 5 if the statement does not apply to you at all (does not apply at all).")
-
-        q9_answers = {}
-        for key, question in config.q9_qs.items():
-            st.markdown(f"**({key})** {question}")
-
-            q9_answers[key] = st.select_slider(
-                label="--------_",
-                options=config.q9_labels,
-                value=None,
-                key=f"matrix9_slider_{key}",
-                label_visibility="collapsed"
-            )
-
-        st.info(config.submit_warning)
-        submitted = st.form_submit_button("Submit")
-        if submitted:
-            st.session_state.q9_responses = q9_answers
-
-            path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
-            with open(path, "a") as f:
-                f.write("\n\n--- Questionnaire 9 (Technophobie) Responses  ---\n")
-                for key, value in st.session_state["q9_responses"].items():
-                    f.write(f"{key}: {value}\n")
-
-            st.success("Questionnaire 9 responses Saved")
-            st.session_state.qnsubmitted  = 9
-            st.rerun()
 
 
 

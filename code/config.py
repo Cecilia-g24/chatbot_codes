@@ -169,6 +169,66 @@ industry = [
     "Nonprofit / NGO",
     "Other"
 ]
+
+
+QUESTIONNAIRES = [
+    {
+        "id": 2,
+        "title": "Questionnaire 2 (ESS)",
+        "instructions": "Now I will briefly describe some people. Please use the slider to rank how much they are or are not like you.",
+        "qs": "q2_qs",
+        "labels": "q2_labels",
+    },
+    {
+        "id": 3,
+        "title": "Questionnaire 3 (ATAS)",
+        "instructions": "Please respond to each prompt with the appropriate level of agreement per your personal feelings about yourself and technology.",
+        "qs": "q3_qs",
+        "labels": "q3_labels",
+    },
+    {
+        "id": 4,
+        "title": "Questionnaire 4 (ASKU)",
+        "instructions": "The following statements may apply more or less to you. To what extent do you think each statement applies to you personally?",
+        "qs": "q4_qs",
+        "labels": "q4_labels",
+    },
+    {
+        "id": 5,
+        "title": "Questionnaire 5 (IE-4)",
+        "instructions": "The following statements may apply more or less to you. To what extent do you think each statement applies to you personally?",
+        "qs": "q5_qs",
+        "labels": "q5_labels",
+    },
+    {
+        "id": 6,
+        "title": "Questionnaire 6 (L-1)",
+        "instructions": "The next question is about your general satisfaction with life.",
+        "qs": "q6_qs",
+        "labels": "q6_labels",
+    },
+    {
+        "id": 7,
+        "title": "Questionnaire 7 (BFI-10)",
+        "instructions": "How well do the following statements describe your personality? I see myself as someone who…",
+        "qs": "q7_qs",
+        "labels": "q7_labels",
+    },
+    {
+        "id": 8,
+        "title": "Questionnaire 8 (ICT-SC25e)",
+        "instructions": "In the following, you will be asked questions about the handling of digital systems. Digital systems are all digital applications (e.g., software or apps) and all digital devices (e.g., computers or smartphones).",
+        "qs": "q8_qs",
+        "labels": "q8_labels",
+    },
+    {
+        "id": 9,
+        "title": "Questionnaire 9 (Technophobie)",
+        "instructions": "Please indicate by marking the appropriate number between 1 and 5 how much these statements apply to you. Assign the value 1 if the statement applies strongly to you (applies strongly) and the value 5 if the statement does not apply to you at all (does not apply at all).",
+        "qs": "q9_qs",
+        "labels": "q9_labels",
+    },
+]
 # Q2
 q2_qs = {
     "1": "Thinking up new ideas and being creative is important to them. They like to do things in their own original way.",
