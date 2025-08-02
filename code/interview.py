@@ -167,28 +167,6 @@ if not st.session_state.messages:
     )
 
 
-# --- Add time-out and warning logic ---
-#elapsed_time = int(time.time() - st.session_state.start_time)
-#remaining_time = config.TIME_SETTING - elapsed_time
-
-# Show warning if less than 60 seconds left and interview still active
-#if 0 < remaining_time <= 60 and st.session_state.interview_active:
-    #st.warning(
-        #f"⚠️ Only {remaining_time} seconds left for Part 1. Please wrap up your response.",
-        #icon="⚠️"
-    #)
-
-# If time is up, end the interview
-#if remaining_time <= 0 and st.session_state.interview_active:
-    #st.session_state.interview_active = False
-    #st.markdown("⏰ **Time is up. The interview has been terminated automatically.**")
-    #save_interview_data(
-        #username=st.session_state.username,
-        #transcripts_directory=config.TRANSCRIPTS_DIRECTORY,
-        #times_directory=config.TIMES_DIRECTORY,
-    #)
-
-
 
 # Main chat if interview is active
 if st.session_state.interview_active:
@@ -227,6 +205,16 @@ if st.session_state.interview_active:
             closing_code_found = next(
                 (code for code in config.CLOSING_MESSAGES.keys() if code in message_interviewer), None
             )
+
+            # --- Add time-out and warning logic ---
+            elapsed_time = int(time.time() - st.session_state.start_time)
+            remaining_time = config.TIME_SETTING - elapsed_time
+
+            # If time is up, end the interview
+            if remaining_time <= 0 and st.session_state.interview_active:
+                closing_code_found = "666_complete_interview"
+                #st.markdown("⏰ **Time is up. The interview has been terminated automatically.**")
+
 
             if closing_code_found:
                 message_placeholder.empty()
@@ -278,7 +266,7 @@ if st.session_state.interview_active:
 
 # Q1: demographics questionnaire (Post-Interview Questionnaire on AI and Economic Outlook) 
 # if condition: yes closing code + no qs submitted
-if st.session_state.closing_code_found and st.session_state.qnsubmitted == 0:
+if st.session_state.interview_active == False  and st.session_state.qnsubmitted == 0:
     with st.form("q1_form"):
         st.markdown("### 📝 Questionnaires (1/9)")
 
@@ -288,10 +276,10 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 0:
 
         # 2. Gender
         q2 = st.radio("2. What is your gender?", 
-                      ["Male", "Female", "Prefer to self-describe", "Prefer not to say"])
+                      ["Please select...", "Male", "Female", "Prefer to self-describe", "Prefer not to say"], index=None)
 
         # 3. State of Residence
-        q3 = st.selectbox("3. State of Residence", options=config.us_states)
+        q3 = st.selectbox("3. State of Residence", options=config.us_states, index=None)
 
         # 4. Zip Code 
         #q4 = st.text_input("4. Zip Code (5-digit)", value="", key= "type your response here")
@@ -301,7 +289,8 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 0:
             "5. Ethnicity / Race",
             ["White","Black or African American","Hispanic or Latino","Asian",
              "Native American or Alaska Native","Native Hawaiian or Pacific Islander",
-             "Multiracial","Other","Prefer not to say"]
+             "Multiracial","Other","Prefer not to say"], 
+             index=None
         )
 
         # 6. Education
@@ -309,31 +298,33 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 0:
             "6. Highest level of education completed",
             ["Less than high school","High school diploma or equivalent",
              "Some college, no degree","Associate’s degree","Bachelor’s degree",
-             "Master’s degree","Doctorate or professional degree","Prefer not to say"]
+             "Master’s degree","Doctorate or professional degree","Prefer not to say"],
+             index=None
         )
 
         # 7. Area type
         q7 = st.radio("7. How would you describe the area you live in?",
-                      ["Urban","Urban/Rural Mix","Rural"])
+                      ["Urban","Urban/Rural Mix","Rural"], index=None)
 
         # 8. Employment status
         q8 = st.selectbox(
             "8. Current employment status",
             ["Employed full-time (more than 30 hrs/week)","Employed part-time (8–29 hrs/week)","Self-employed",
-             "Unemployed, seeking work","Not in labor force","Retired","Student","Other"]
+             "Unemployed, seeking work","Not in labor force","Retired","Student","Other"],
+             index=None
         )
 
         # 9. Occupation
-        q9 = st.selectbox("9. What is your current occupation?", options=config.occupations)
+        q9 = st.selectbox("9. What is your current occupation?", options=config.occupations, index=None)
 
         # 10. Industry
-        q10 = st.selectbox("10. Industry or sector of your work", options=config.industry)
+        q10 = st.selectbox("10. Industry or sector of your work", options=config.industry, index=None)
 
         # 11. Number of children
-        q11 = st.radio("11. Total number of children", ["0","1","2","3","More than 3"])
+        q11 = st.radio("11. Total number of children", ["0","1","2","3","More than 3"], index=None)
 
         # 12. Household size
-        q12 = st.selectbox("12. What is your household size?", options=list(range(1, 10)))
+        q12 = st.selectbox("12. What is your household size?", options=list(range(1, 10)),index=None)
 
         # 13. Household income
         q13 = st.selectbox(
@@ -341,38 +332,38 @@ if st.session_state.closing_code_found and st.session_state.qnsubmitted == 0:
             ["Less than $10,000","$10,000–19,999","$20,000–29,999","$30,000–39,999","$40,000–49,999",
              "$50,000–59,999","$60,000–74,999","$75,000–99,999","$100,000–124,999",
              "$125,000–149,999","$150,000–199,999","$200,000–249,999","$250,000 or more",
-             "Prefer not to answer"]
+             "Prefer not to answer"], index=None
         )
 
         # 14. Presidential vote
         q14 = st.radio("14. Who did you vote for in the last U.S. presidential election?",
-                       ["Donald Trump","Kamala Harris","Someone else","I did not vote","Prefer not to say"])
+                       ["Donald Trump","Kamala Harris","Someone else","I did not vote","Prefer not to say"],index=None)
 
         # 15. Political identification
         q15 = st.radio("15. Political identification",
-                       ["Democrat","Republican","Independent","Other","Prefer not to say"])
+                       ["Democrat","Republican","Independent","Other","Prefer not to say"],index=None)
 
         # 19. Religious affiliation
         q19 = st.selectbox("19. Religious affiliation",
                            ["None","Christian – Protestant","Christian – Catholic","Other Christian",
-                            "Jewish","Muslim","Hindu","Buddhist","Other religion","Prefer not to say"])
+                            "Jewish","Muslim","Hindu","Buddhist","Other religion","Prefer not to say"],index=None)
 
         # 20. U.S. citizenship
         q20 = st.radio("20. Are you a U.S. citizen?",
-                       ["Yes","No","Prefer not to say"])
+                       ["Yes","No","Prefer not to say"],index=None)
 
         # 21. Born in U.S.
         q21 = st.radio("21. Were you born in the United States?",
-                       ["Yes","No","Prefer not to say"])
+                       ["Yes","No","Prefer not to say"],index=None)
 
         # 22. Primary language
         q22 = st.selectbox("22. Primary language at home",
-                           ["English","Spanish","Chinese","Vietnamese","Other","Prefer not to say"])
+                           ["English","Spanish","Chinese","Vietnamese","Other","Prefer not to say"],index=None)
 
         # 23. Frequency of AI use
         q23 = st.selectbox("23. Frequency of AI use",
                            ["Multiple times a day","Once a day","A few times per week","A few times per month",
-                            "Rarely","Never","I’m not sure"])
+                            "Rarely","Never","I’m not sure"],index=None)
 
         ##############################
         st.info(config.submit_warning)

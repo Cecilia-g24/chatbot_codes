@@ -117,7 +117,7 @@ AVATAR_RESPONDENT = "\U0001F9D1\U0000200D\U0001F4BB"
 
 
 # Max time for countdown timer for interview / API interaction (in seconds)
-TIME_SETTING = 1200       #20 min
+TIME_SETTING = 10 #1200       #20 min
 
 
 # ---------------------------------------------------
