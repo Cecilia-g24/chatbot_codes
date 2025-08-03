@@ -5,3 +5,4 @@ gatherUsageStats = false
 [client]
 # Minimal appearance of user interface
 toolbarMode = "minimal"
+showSidebarNavigation = false
