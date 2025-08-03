@@ -6,7 +6,7 @@ from utils import (
     save_interview_data,
 )
 import config
-st.set_page_config(page_title="questionnaires", page_icon="🧠")
+st.set_page_config(page_title="qOrganizer", page_icon="🧠")
 # Auth + username
 if config.LOGINS and True:  # test_Mode assumed True
     pwd_correct, username = check_password()

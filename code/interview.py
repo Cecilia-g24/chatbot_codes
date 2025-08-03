@@ -38,8 +38,8 @@ else:
     st.session_state.username = prolific_pid or "testaccount"
 
 
-st.title("Welcome to the AI!!! Interview")
-st.write("Thank you for participating in our study. Please click the button below to begin your interview.")
+st.title("Welcome to the Interview")
+st.write("Thank you for participating in our study. Here is a long and boring data protection disclaimer:...... Please click the button below to begin your interview.")
 
 if st.button("▶️ Start Interview"):
     st.switch_page("pages/chatbot.py")

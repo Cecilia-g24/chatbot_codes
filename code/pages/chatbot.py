@@ -10,7 +10,7 @@ from utils import (
 import config
 
 # Page setup
-st.set_page_config(page_title="01_chatbot", page_icon=config.AVATAR_INTERVIEWER)
+st.set_page_config(page_title="chatbot", page_icon=config.AVATAR_INTERVIEWER)
 
 # Auth + username
 if config.LOGINS and True:  # test_Mode assumed True
@@ -42,8 +42,12 @@ if "start_time" not in st.session_state:
 # Initialize closing code for ending interview
 if "closing_code_found" not in st.session_state:
     st.session_state.closing_code_found = None
+if "startNextPhase" not in st.session_state:
+    st.session_state.startNextPhase = False
 
-
+if st.session_state.startNextPhase == True:
+    st.switch_page("pages/demographics.py")
+    
 # Load API client
 if "gpt" in config.MODEL.lower():
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", st.secrets["API_KEY_OPENAI"]))
@@ -114,9 +118,9 @@ if st.session_state.interview_active:
                 closing_code = "666_complete_interview"
 
             if closing_code:
+                st.session_state.startNextPhase = True
                 #st.session_state.interview_active = False
                 st.session_state.closing_code_found = closing_code
-                st.switch_page("pages/demographics.py")
                 closing_msg = config.CLOSING_MESSAGES[closing_code]
                 placeholder.empty()
                 st.session_state.messages.append({"role": "assistant", "content": full_response})
@@ -135,7 +139,6 @@ if st.session_state.interview_active:
                         config.TRANSCRIPTS_DIRECTORY, st.session_state.username
                     )
                     time.sleep(0.1)
-                st.switch_page("pages/demographics.py")
             else:
                 placeholder.markdown(full_response)
                 st.session_state.messages.append({"role": "assistant", "content": full_response})
