@@ -39,19 +39,27 @@ with st.form(f"q{q['id']}_form"):
             label_visibility="collapsed"
         )
 
-    st.info(config.submit_warning)
     submitted = st.form_submit_button("Submit")
 
 if submitted:
-    response_key = f"q{q['id']}_responses"
-    st.session_state[response_key] = answers
+    allFilledOut = True
+    for key, value in answers.items():
+        if answers[key]==None:
+            
+            allFilledOut = False
 
-    path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
-    with open(path, "a") as f:
-        f.write(f"\n\n--- {q['title']} Responses ---\n")
-        for key, value in st.session_state[response_key].items():
-            f.write(f"{key}: {value}\n")
+    if allFilledOut:
+        response_key = f"q{q['id']}_responses"
+        st.session_state[response_key] = answers
 
-    st.success(f"✅ {q['title']} responses saved.")
-    st.session_state.qnsubmitted = q["id"]
-    st.switch_page("pages/qOrganizer.py")
+        path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
+        with open(path, "a") as f:
+            f.write(f"\n\n--- {q['title']} Responses ---\n")
+            for key, value in st.session_state[response_key].items():
+                f.write(f"{key}: {value}\n")
+
+        st.success(f"✅ {q['title']} responses saved.")
+        st.session_state.qnsubmitted = q["id"]
+        st.switch_page("pages/qOrganizer.py")
+    else:
+        st.info("Please fill out all fields to continue.")
