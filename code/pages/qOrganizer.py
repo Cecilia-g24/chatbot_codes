@@ -14,14 +14,16 @@ if config.LOGINS and True:  # test_Mode assumed True
         st.stop()
     st.session_state.username = username
 
+st.session_state.selected_q_keys = ["ESS", "IE4", "BFI10"]
+st.session_state.numquests = len(st.session_state.selected_q_keys)
 
 # Initialise session state
-if "next_q" not in st.session_state:
-    st.session_state.next_q = 0
+if "qcount" not in st.session_state:
+    st.session_state.qcount = 0
 else:
-    st.session_state.next_q = st.session_state.next_q + 1
+    st.session_state.qcount = st.session_state.qcount + 1
 
-if st.session_state.next_q <= 7:
+if st.session_state.qcount < st.session_state.numquests:
     st.switch_page("pages/questionnairesForm.py")
 else:
     st.switch_page("pages/studyCompleteScreen.py")

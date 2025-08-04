@@ -15,14 +15,11 @@ if config.LOGINS and True:  # test_Mode assumed True
     st.session_state.username = username
 
 
-
-q = config.QUESTIONNAIRES[st.session_state.next_q]
-
+q = next(q for q in config.QUESTIONNAIRES if q["key"] == st.session_state.selected_q_keys[st.session_state.qcount])
 
 
-
-with st.form(f"q{q['id']}_form"):
-    st.markdown(f"### 📝 Questionnaires ({q['id']}/9)")
+with st.form(f"q{q['key']}_form"):
+    st.markdown(f"### 📝 Questionnaires ({st.session_state.qcount+1}/{st.session_state.numquests})")
     st.write(q["instructions"])
 
     answers = {}
@@ -35,7 +32,7 @@ with st.form(f"q{q['id']}_form"):
             label="--------_",
             options=labels,
             index=None,
-            key=f"matrix{q['id']}_radio_{key}",
+            key=f"matrix{q['key']}_radio_{key}",
             label_visibility="collapsed"
         )
 
@@ -49,7 +46,7 @@ if submitted:
             allFilledOut = False
 
     if allFilledOut:
-        response_key = f"q{q['id']}_responses"
+        response_key = f"q{q['key']}_responses"
         st.session_state[response_key] = answers
 
         path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
@@ -61,4 +58,4 @@ if submitted:
         st.success(f"✅ {q['title']} responses saved.")
         st.switch_page("pages/qOrganizer.py")
     else:
-        st.info("Please fill out all fields to continue.")
+        st.info("Please answer ALL questions to continue.")

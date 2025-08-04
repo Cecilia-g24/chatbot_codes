@@ -37,7 +37,7 @@ with st.form("q1_form"):
         "q2": {
             "label": "2. What is your gender?",
             "type": "radio",
-            "options": ["Please select...", "Male", "Female", "Prefer to self-describe", "Prefer not to say"]
+            "options": ["Male", "Female", "Other", "Prefer not to say"]
         },
         "q3": {
             "label": "3. State of Residence",
@@ -112,7 +112,7 @@ with st.form("q1_form"):
             "options": ["Donald Trump", "Kamala Harris", "Someone else", "I did not vote", "Prefer not to say"]
         },
         "q15": {
-            "label": "15. Political identification",
+            "label": "15. How do you identify politcally?",
             "type": "radio",
             "options": ["Democrat", "Republican", "Independent", "Other", "Prefer not to say"]
         },
