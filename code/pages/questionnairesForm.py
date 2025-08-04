@@ -59,7 +59,6 @@ if submitted:
                 f.write(f"{key}: {value}\n")
 
         st.success(f"✅ {q['title']} responses saved.")
-        st.session_state.qnsubmitted = q["id"]
         st.switch_page("pages/qOrganizer.py")
     else:
         st.info("Please fill out all fields to continue.")

@@ -157,8 +157,6 @@ with st.form("q1_form"):
             answers[key] = st.selectbox(q["label"], options=q["options"], index=None)
         elif q["type"] == "radio":
             answers[key] = st.radio(q["label"], options=q["options"], index=None)
-
-    st.info(config.submit_warning)
     submitted = st.form_submit_button("Submit")
 
 if submitted:
