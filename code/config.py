@@ -48,7 +48,24 @@ Do not suggest specific policy areas or interventions, but if the respondent foc
 ‘Are there any other areas where you think government action might be important?’
 When the respondent raises broader concerns (e.g. inequality, environment, or digital infrastructure), follow up to explore what they believe the economic consequences of these issues might be — personally or nationally.
 
-Once the respondent confirms that all aspects of their views on political action have been thoroughly discussed, you may end the interview or return to any earlier topic if needed.
+Once the respondent confirms that all aspects of their views on political action have been thoroughly discussed, continue with the next part.
+
+--- Final Part of the interview: Revisiting and deepening earlier topics
+
+In this final part of the interview, you may return to any earlier topic — Part I (general economic outlook), Part II (AI’s personal economic impact), Part III (personal strategies), or Part IV (government responsibility) — to gather further information, clarifications, or examples.
+
+Use this opportunity to:
+- Revisit any topic that seemed important but underexplored.
+- Ask for concrete examples if the respondent previously stayed abstract or vague.
+- Clarify ambiguous or conflicting statements.
+- Encourage the respondent to share perspectives they may not have mentioned yet.
+
+This phase should feel like a natural continuation of the interview, not a repetition. Try using open-ended follow-up prompts such as:
+- "Earlier, you mentioned [X] — could you tell me more about that?"
+- "Are there any other experiences or thoughts that come to mind when thinking about [topic]?"
+- "Looking back on everything we’ve discussed, is there anything you’d like to add or elaborate on?"
+
+This part of the interview does not have to follow a fixed order — prioritize responsiveness and conversational flow.
 """
 
 
@@ -78,7 +95,7 @@ Lastly, there are specific codes that must be used exclusively in designated sit
 
 Problematic content: If the respondent writes legally or ethically problematic content, please reply with exactly the code '555_exit' and no other text.
 
-End of the interview: When you have asked all questions, or when the respondent does not want to continue the interview, please reply with exactly the code '666_complete_interview' and no other text."""
+End of the interview: When the respondent does not want to continue the interview, please reply with exactly the code '666_complete_interview' and no other text."""
 
 
 
@@ -117,292 +134,227 @@ AVATAR_RESPONDENT = "\U0001F9D1\U0000200D\U0001F4BB"
 
 
 # Max time for countdown timer for interview / API interaction (in seconds)
-TIME_SETTING = 10 #1200       #20 min
+TIME_SETTING = 1200 #1200       #20 min
 
 
 # ---------------------------------------------------
 # store questionnaire-related contents
 # Q1q3
 us_states = [
-            "Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware",
-            "Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana",
-            "Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri","Montana",
-            "Nebraska","Nevada","New Hampshire","New Jersey","New Mexico","New York","North Carolina",
-            "North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina",
-            "South Dakota","Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia",
-            "Wisconsin","Wyoming","Outside the U.S."
-        ] 
-occupations = [
-    "Student",
-    "Unemployed / Job Seeking",
-    "Homemaker / Caregiver",
-    "Retired",
-    "Manager / Executive",
-    "Professional (e.g., Doctor, Engineer, Lawyer)",
-    "Technician / Skilled Worker",
-    "Clerical / Administrative Staff",
-    "Sales / Customer Service",
-    "Service & Hospitality Worker (e.g., Waiter, Hotel Staff)",
-    "Manual Labor / Construction / Manufacturing",
-    "Driver / Transportation Worker",
-    "Self-Employed / Freelancer",
-    "Military / Police / Security",
-    "Other"
+    "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
+    "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana",
+    "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana",
+    "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina",
+    "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina",
+    "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "Washington, D.C.",
+    "West Virginia", "Wisconsin", "Wyoming",
+    "Puerto Rico", "U.S. Virgin Islands", "Guam", "American Samoa", "Northern Mariana Islands","Other",
+    "Outside the U.S."
 ]
-industry = [
-    "Agriculture, Forestry, Fishing",
-    "Mining, Oil & Gas",
-    "Manufacturing",
-    "Construction",
-    "Transportation & Logistics",
-    "Retail & Wholesale Trade",
-    "Hospitality & Food Services",
-    "Information & Communication Technology (ICT)",
-    "Finance & Insurance",
-    "Real Estate & Property Management",
-    "Education",
-    "Healthcare & Social Assistance",
-    "Public Administration / Government",
-    "Arts, Entertainment & Media",
-    "Scientific / Technical / Professional Services",
-    "Utilities & Energy",
-    "Nonprofit / NGO",
-    "Other"
-]
+
 
 
 QUESTIONNAIRES = [
     {
         "key": "ESS",
-        "title": "ESS",
-        "instructions": "Now I will briefly describe some people. Please use the slider to rank how much they are or are not like you.",
-        "qs": "q2_qs",
-        "labels": "q2_labels",
+        "instructions": "Now we will briefly describe some people. Please read each description and **tell us how much each person is or is not like you**. Use the buttons for your answer.",
+        "labels": [
+            "Very much like me",
+            "Like me",
+            "Somewhat like me",
+            "A little like me",
+            "Not like me",
+            "Not like me at all",
+            "(Don't know)"
+        ],
+        "questions": {
+            "1": "Thinking up new ideas and being creative is important to them. They like to do things in their own original way.",
+            "2": "It is important to them to be rich. They want to have a lot of money and expensive things.",
+            "3": "They think it is important that every person in the world should be treated equally. They believe everyone should have equal opportunities in life.",
+            "4": "It's important to them to show their abilities. They want people to admire what they do.",
+            "5": "It is important to them to live in secure surroundings. They avoid anything that might endanger their safety.",
+            "6": "They like surprises and are always looking for new things to do. They think it is important to do lots of different things in life.",
+            "7": "They believe that people should do what they're told. They think people should follow rules at all times, even when no one is watching.",
+            "8": "It is important to them to listen to people who are different from them. Even when they disagree with others, they still want to understand them.",
+            "9": "It is important to them to be humble and modest. They try not to draw attention to themselves.",
+            "10": "Having a good time is important to them. They like to \"spoil\" themself.",
+            "11": "It is important to them to make their own decisions about what they do. They like to be free and not depend on others.",
+            "12": "It's very important to them to help the people around them. They want to care for others' well-being.",
+            "13": "Being very successful is important to them. They hope people will recognise their achievements.",
+            "14": "It is important to them that the government ensures their safety against all threats. They want the state to be strong so it can defend its citizens.",
+            "15": "They look for adventures and like to take risks. They want to have an exciting life.",
+            "16": "It is important to them always to behave properly. They want to avoid doing anything people would say is wrong.",
+            "17": "It is important to them to get respect from others. They want people to do what they say.",
+            "18": "It is important to them to be loyal to their friends. They want to devote themself to people close to them.",
+            "19": "They strongly believe that people should care for nature. Looking after the environment is important to them.",
+            "20": "Tradition is important to them. They try to follow the customs handed down by their religion or their family.",
+            "21": "They seek every chance they can to have fun. It is important to them to do things that give them pleasure."
+        }
     },
     {
         "key": "ATAS",
-        "title": "ATAS",
         "instructions": "Please respond to each prompt with the appropriate level of agreement per your personal feelings about yourself and technology.",
-        "qs": "q3_qs",
-        "labels": "q3_labels",
+        "labels": [
+            "Strongly Disagree", 
+            "Disagree", 
+            "Neither Disagree or Agree", 
+            "Agree", 
+            "Strongly Agree"
+        ],
+        "questions": {
+            "1": "I am not a technology person",
+            "2": "I am reluctant to learn new features of technology",
+            "3": "I am uncomfortable using technology",
+            "4": "Technology does not improve my quality of life",
+            "5": "I feel out of control using technology",
+            "6": "I feel uneasy using technology",
+            "7": "I feel technology complicates simple tasks",
+            "8": "Keeping up with the newest technology is impossible",
+            "9": "I am inefficient with technology",
+            "10": "Using technology makes me nervous",
+            "11": "I am often annoyed when using technology"
+        }
     },
     {
         "key": "ASKU",
-        "title": "Questionnaire 4 (ASKU)",
         "instructions": "The following statements may apply more or less to you. To what extent do you think each statement applies to you personally?",
-        "qs": "q4_qs",
-        "labels": "q4_labels",
+        "labels": [
+            "1 - Doesn't apply at all",
+            "2 - Applies a bit",
+            "3 - Applies somewhat",
+            "4 - Applies mostly",
+            "5 - Applies completely"
+        ],
+        "questions": {
+            "1": "I can rely on my own abilities in difficult situations.",
+            "2": "I am able to solve most problems on my own.",
+            "3": "I can usually solve even challenging and complex tasks well."
+        }
     },
     {
         "key": "IE4",
-        "title": "Questionnaire 5 (IE-4)",
         "instructions": "The following statements may apply more or less to you. To what extent do you think each statement applies to you personally?",
-        "qs": "q5_qs",
-        "labels": "q5_labels",
+        "labels": [
+            "1 - Does not apply at all",
+            "2 - Applies a bit",
+            "3 - Applies somewhat",
+            "4 - Applies mostly",
+            "5 - Applies completely"
+        ],
+        "questions": {
+            "1": "I'm my own boss.",
+            "2": "If I work hard, I will succeed.",
+            "3": "Whether at work or in my private life: What I do is mainly determined by others.",
+            "4": "Fate often gets in the way of my plans."
+        }
     },
     {
         "key": "L1",
-        "title": "Questionnaire 6 (L-1)",
         "instructions": "The next question is about your general satisfaction with life.",
-        "qs": "q6_qs",
-        "labels": "q6_labels",
+        "labels": [
+            "1 - not at all satisfied",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10 - completely satisfied"
+        ],
+        "questions": {
+            "1": "All things considered, how satisfied are you with your life these days?"
+        }
     },
     {
         "key": "BFI10",
-        "title": "Questionnaire 7 (BFI-10)",
         "instructions": "How well do the following statements describe your personality? I see myself as someone who…",
-        "qs": "q7_qs",
-        "labels": "q7_labels",
+        "labels": [
+            "1 - Disagree strongly",
+            "2 - Disagree a little",
+            "3 - Neither agree nor disagree",
+            "4 - Agree a little",
+            "5 - Agree strongly"
+        ],
+        "questions": {
+            "1": "…is reserved",
+            "2": "…is generally trusting",
+            "3": "…tends to be lazy",
+            "4": "…is relaxed, handles stress well",
+            "5": "…has few artistic interests",
+            "6": "…is outgoing, sociable",
+            "7": "…tends to find fault with others",
+            "8": "…does a thorough job",
+            "9": "…gets nervous easily",
+            "10": "…has an active imagination"
+        }
     },
     {
         "key": "ICTSC25",
-        "title": "Questionnaire 8 (ICT-SC25e)",
         "instructions": "In the following, you will be asked questions about the handling of digital systems. Digital systems are all digital applications (e.g., software or apps) and all digital devices (e.g., computers or smartphones).",
-        "qs": "q8_qs",
-        "labels": "q8_labels",
+        "labels": [
+            "Strongly disagree",
+            "disagree",
+            "Slightly disagree",
+            "Slightly agree",
+            "agree",
+            "Strongly agree"
+        ],
+        "questions": {
+            "1": "I can operate digital systems.",
+            "2": "I am good at using digital systems.",
+            "3": "I quickly learn when it comes to using digital systems.",
+            "4": "It is easy for me to get familiar with new digital systems.",
+            "5": "I have always been good at using digital systems.",
+            "6": "I can communicate information through various media formats (text, image, video, sound ...).",
+            "7": "I am good at collaborating with others through digital systems.",
+            "8": "I quickly learn which communication medium (text, audio, video, sound ...) has to be used for editing a task.",
+            "9": "It is easy for me to spread information through digital systems.",
+            "10": "I can evaluate the quality of digital data, information, and content I use.",
+            "11": "I am good at assessing the relevance of digital data, information, and content.",
+            "12": "I quickly learn how and where digital data, information, and content have to be stored.",
+            "13": "It is easy for me to find digital data, information, and content to process a task.",
+            "14": "I can create digital data, information, and content on my own.",
+            "15": "I am good at developing digital data, information, and content.",
+            "16": "I quickly learn how to interpret digital data, information, and content.",
+            "17": "It is easy for me to prepare digital data, information, and content for others.",
+            "18": "I can protect digital systems through security measures.",
+            "19": "I am good at protecting private data when using digital systems.",
+            "20": "I quickly learn what it means to acquire knowledge about security risks and measures in digital systems.",
+            "21": "It is easy for me to handle digital systems responsibly.",
+            "22": "I can restore the functionality of digital systems in case of problems without the help of others.",
+            "23": "I am good at solving problems of digital systems without the help of others.",
+            "24": "I quickly learn to solve content problems with the help of digital systems.",
+            "25": "It is easy for me to select suitable digital systems and to solve content problems."
+        }
     },
     {
         "key": "Technophobia",
-        "title": "Questionnaire 9 (Technophobie)",
         "instructions": "Please indicate by marking the appropriate number between 1 and 5 how much these statements apply to you. Assign the value 1 if the statement applies strongly to you (applies strongly) and the value 5 if the statement does not apply to you at all (does not apply at all).",
-        "qs": "q9_qs",
-        "labels": "q9_labels",
-    },
-]
-# Q2
-q2_qs = {
-    "1": "Thinking up new ideas and being creative is important to them. They like to do things in their own original way.",
-    "2": "It is important to them to be rich. They want to have a lot of money and expensive things.",
-    "3": "They think it is important that every person in the world should be treated equally. They believe everyone should have equal opportunities in life.",
-    "4": "It's important to them to show their abilities. They want people to admire what they do.",
-    "5": "It is important to them to live in secure surroundings. They avoid anything that might endanger their safety.",
-    "6": "They like surprises and are always looking for new things to do. They think it is important to do lots of different things in life.",
-    "7": "They believe that people should do what they're told. They think people should follow rules at all times, even when no one is watching.",
-    "8": "It is important to them to listen to people who are different from them. Even when they disagree with others, they still want to understand them.",
-    "9": "It is important to them to be humble and modest. They try not to draw attention to themselves.",
-    "10": "Having a good time is important to them. They like to “spoil” themself.",
-    "11": "It is important to them to make their own decisions about what they do. They like to be free and not depend on others.",
-    "12": "It's very important to them to help the people around them. They want to care for others’ well-being.",
-    "13": "Being very successful is important to them. They hope people will recognise their achievements.",
-    "14": "It is important to them that the government ensures their safety against all threats. They want the state to be strong so it can defend its citizens.",
-    "15": "They look for adventures and like to take risks. They want to have an exciting life.",
-    "16": "It is important to them always to behave properly. They want to avoid doing anything people would say is wrong.",
-    "17": "It is important to them to get respect from others. They want people to do what they say.",
-    "18": "It is important to them to be loyal to their friends. They want to devote themself to people close to them.",
-    "19": "They strongly believe that people should care for nature. Looking after the environment is important to them.",
-    "20": "Tradition is important to them. They try to follow the customs handed down by their religion or their family.",
-    "21": "They seek every chance they can to have fun. It is important to them to do things that give them pleasure."
-}
-q2_labels = [
-    "Very much like me",
-    "Like me",
-    "Somewhat like me",
-    "A little like me",
-    "Not like me",
-    "Not like me at all",
-    "(Don't know)"
-]
-# Q3
-q3_qs = {
-    "1": "I am not a technology person",
-    "2": "I am reluctant to learn new features of technology",
-    "3": "I am uncomfortable using technology",
-    "4": "Technology does not improve my quality of life",
-    "5": "I feel out of control using technology",
-    "6": "I feel uneasy using technology",
-    "7": "I feel technology complicates simple tasks",
-    "8": "Keeping up with the newest technology is impossible",
-    "9": "I am inefficient with technology",
-    "10": "Using technology makes me nervous",
-    "11": "I am often annoyed when using technology"
-}
-q3_labels = [
-    "Strongly Disagree", 
-    "Disagree", 
-    "Neither Disagree or Agree", 
-    "Agree", 
-    "Strongly Agree"]
-# Q4
-q4_qs = {
-    "1": "I can rely on my own abilities in difficult situations.",
-    "2": "I am able to solve most problems on my own.",
-    "3": "I can usually solve even challenging and complex tasks well."
-}
-q4_labels = [
-    "1 - Doesn't apply at all",
-    "2 - Applies a bit",
-    "3 - Applies somewhat",
-    "4 - Applies mostly",
-    "5 - Applies completely"
-]
-# Q5
-q5_qs = {
-    "1": "I’m my own boss.",
-    "2": "If I work hard, I will succeed.",
-    "3": "Whether at work or in my private life: What I do is mainly determined by others.",
-    "4": "Fate often gets in the way of my plans."
-}
-q5_labels = [
-    "1 - Does not apply at all",
-    "2 - Applies a bit",
-    "3 - Applies somewhat",
-    "4 - Applies mostly",
-    "5 - Applies completely"
-]
-# Q6
-q6_qs = {
-    "1": "All things considered, how satisfied are you with your life these days?"
-}
-q6_labels = [
-    "1 - not at all satisfied",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10 - completely satisfied"
-]
-# Q7
-q7_qs = {
-    "1": "…is reserved",
-    "2": "…is generally trusting",
-    "3": "…tends to be lazy",
-    "4": "…is relaxed, handles stress well",
-    "5": "…has few artistic interests",
-    "6": "…is outgoing, sociable",
-    "7": "…tends to find fault with others",
-    "8": "…does a thorough job",
-    "9": "…gets nervous easily",
-    "10": "…has an active imagination"
-}
-q7_labels = [
-    "1 - Disagree strongly",
-    "2 - Disagree a little",
-    "3 - Neither agree nor disagree",
-    "4 - Agree a little",
-    "5 - Agree strongly"
-]
-# Q8
-q8_qs = {
-    "1": "I can operate digital systems.",
-    "2": "I am good at using digital systems.",
-    "3": "I quickly learn when it comes to using digital systems.",
-    "4": "It is easy for me to get familiar with new digital systems.",
-    "5": "I have always been good at using digital systems.",
-    "6": "I can communicate information through various media formats (text, image, video, sound ...).",
-    "7": "I am good at collaborating with others through digital systems.",
-    "8": "I quickly learn which communication medium (text, audio, video, sound ...) has to be used for editing a task.",
-    "9": "It is easy for me to spread information through digital systems.",
-    "10": "I can evaluate the quality of digital data, information, and content I use.",
-    "11": "I am good at assessing the relevance of digital data, information, and content.",
-    "12": "I quickly learn how and where digital data, information, and content have to be stored.",
-    "13": "It is easy for me to find digital data, information, and content to process a task.",
-    "14": "I can create digital data, information, and content on my own.",
-    "15": "I am good at developing digital data, information, and content.",
-    "16": "I quickly learn how to interpret digital data, information, and content.",
-    "17": "It is easy for me to prepare digital data, information, and content for others.",
-    "18": "I can protect digital systems through security measures.",
-    "19": "I am good at protecting private data when using digital systems.",
-    "20": "I quickly learn what it means to acquire knowledge about security risks and measures in digital systems.",
-    "21": "It is easy for me to handle digital systems responsibly.",
-    "22": "I can restore the functionality of digital systems in case of problems without the help of others.",
-    "23": "I am good at solving problems of digital systems without the help of others.",
-    "24": "I quickly learn to solve content problems with the help of digital systems.",
-    "25": "It is easy for me to select suitable digital systems and to solve content problems."
-}
-q8_labels = [
-    "Strongly disagree",
-    "disagree",
-    "Slightly disagree",
-    "Slightly agree",
-    "agree",
-    "Strongly agree"
-]
-# Q9
-q9_qs = {
-    "1": "I feel some anxiety when I approach an ATM.",
-    "2": "ATMs agitate me.",
-    "3": "I think most people know how to use ATMs better than I.",
-    "4": "I feel frustrated when I use an ATM.",
-    "5": "Thinking about ATMs makes me nervous.",
-    "6": "ATMs are intimidating.",
-    "7": "I prefer to have people handle my bank activities than to use an ATM.",
-    "8": "I resent that ATMs are becoming so prevalent in our daily lives.",
-    "9": "I feel more confident dealing with a human teller than an ATM.",
-    "10": "Machines should not handle peoples money transactions.",
-    "11": "I feel comfortable when using ATMs.",
-    "12": "ATMs make bank transactions easier.",
-    "13": "I like that ATMs are so convenient."
-}
-q9_labels = [
-    "1 - Applies strongly",
-    "2",
-    "3",
-    "4",
-    "5 - Does not apply at all"
+        "labels": [
+            "1 - Applies strongly",
+            "2",
+            "3",
+            "4",
+            "5 - Does not apply at all"
+        ],
+        "questions": {
+            "1": "I feel some anxiety when I approach an ATM.",
+            "2": "ATMs agitate me.",
+            "3": "I think most people know how to use ATMs better than I.",
+            "4": "I feel frustrated when I use an ATM.",
+            "5": "Thinking about ATMs makes me nervous.",
+            "6": "ATMs are intimidating.",
+            "7": "I prefer to have people handle my bank activities than to use an ATM.",
+            "8": "I resent that ATMs are becoming so prevalent in our daily lives.",
+            "9": "I feel more confident dealing with a human teller than an ATM.",
+            "10": "Machines should not handle peoples money transactions.",
+            "11": "I feel comfortable when using ATMs.",
+            "12": "ATMs make bank transactions easier.",
+            "13": "I like that ATMs are so convenient."
+        }
+    }
 ]
 # ---------------------------------------------------
 
