@@ -193,7 +193,7 @@ QUESTIONNAIRES = [
     },
     {
         "key": "ATAS",
-        "instructions": "Please respond to each prompt with the appropriate level of agreement per your personal feelings about yourself and technology.",
+        "instructions": "Please respond to each prompt with the appropriate level of agreement per your **personal feelings about yourself and technology**.",
         "labels": [
             "Strongly Disagree", 
             "Disagree", 
@@ -217,7 +217,7 @@ QUESTIONNAIRES = [
     },
     {
         "key": "ASKU",
-        "instructions": "The following statements may apply more or less to you. To what extent do you think each statement applies to you personally?",
+        "instructions": "The following statements may apply more or less to you. To what extent do you think each statement **applies to you personally**?",
         "labels": [
             "1 - Doesn't apply at all",
             "2 - Applies a bit",
@@ -250,7 +250,7 @@ QUESTIONNAIRES = [
     },
     {
         "key": "L1",
-        "instructions": "The next question is about your general satisfaction with life.",
+        "instructions": "The next question is about your **general satisfaction with life**.",
         "labels": [
             "1 - not at all satisfied",
             "2",
@@ -269,7 +269,7 @@ QUESTIONNAIRES = [
     },
     {
         "key": "BFI10",
-        "instructions": "How well do the following statements describe your personality? I see myself as someone who…",
+        "instructions": "How well do the following statements **describe your personality**? **I see myself as someone who…**",
         "labels": [
             "1 - Disagree strongly",
             "2 - Disagree a little",
@@ -292,7 +292,7 @@ QUESTIONNAIRES = [
     },
     {
         "key": "ICTSC25",
-        "instructions": "In the following, you will be asked questions about the handling of digital systems. Digital systems are all digital applications (e.g., software or apps) and all digital devices (e.g., computers or smartphones).",
+        "instructions": "In the following, you will be asked questions about the handling of digital systems. **Digital systems are all digital applications (e.g., software or apps) and all digital devices (e.g., computers or smartphones).**",
         "labels": [
             "Strongly disagree",
             "disagree",
@@ -327,32 +327,6 @@ QUESTIONNAIRES = [
             "23": "I am good at solving problems of digital systems without the help of others.",
             "24": "I quickly learn to solve content problems with the help of digital systems.",
             "25": "It is easy for me to select suitable digital systems and to solve content problems."
-        }
-    },
-    {
-        "key": "Technophobia",
-        "instructions": "Please indicate by marking the appropriate number between 1 and 5 how much these statements apply to you. Assign the value 1 if the statement applies strongly to you (applies strongly) and the value 5 if the statement does not apply to you at all (does not apply at all).",
-        "labels": [
-            "1 - Applies strongly",
-            "2",
-            "3",
-            "4",
-            "5 - Does not apply at all"
-        ],
-        "questions": {
-            "1": "I feel some anxiety when I approach an ATM.",
-            "2": "ATMs agitate me.",
-            "3": "I think most people know how to use ATMs better than I.",
-            "4": "I feel frustrated when I use an ATM.",
-            "5": "Thinking about ATMs makes me nervous.",
-            "6": "ATMs are intimidating.",
-            "7": "I prefer to have people handle my bank activities than to use an ATM.",
-            "8": "I resent that ATMs are becoming so prevalent in our daily lives.",
-            "9": "I feel more confident dealing with a human teller than an ATM.",
-            "10": "Machines should not handle peoples money transactions.",
-            "11": "I feel comfortable when using ATMs.",
-            "12": "ATMs make bank transactions easier.",
-            "13": "I like that ATMs are so convenient."
         }
     }
 ]

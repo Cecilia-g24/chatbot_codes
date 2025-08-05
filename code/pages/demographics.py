@@ -101,7 +101,7 @@ with st.form("survey_form"):
     # Area description
     answers["area_type"] = st.radio(
         "How would you describe the area you live in?",
-        options=["Urban", "Urban/Rural Mix", "Rural"],
+        options=["Urban area", "Mixed urban-rural", "Rural area"],
         index=None
     )
     
