@@ -102,7 +102,7 @@ End of the interview: When the respondent does not want to continue the intervie
 # Pre-written closing messages for codes
 CLOSING_MESSAGES = {}
 CLOSING_MESSAGES["555_exit"] = "Thank you for participating, the interview concludes here."
-CLOSING_MESSAGES["666_complete_interview"] = ("Thank you for your responses. It was nice talking with you. Please proceed to fill out the following questionnaires.")
+CLOSING_MESSAGES["666_complete_interview"] = ("Thank you, the interview is no finished. Now we will present you with a couple of questionnaires to fill out. Is there anything else you want to tell us before we start the questionnaires?")
 
 
 # System prompt
