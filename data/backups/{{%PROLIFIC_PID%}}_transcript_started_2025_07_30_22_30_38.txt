@@ -1,4 +1,0 @@
-Start of Chat Interview
-assistant: Hello! We are interested in your personal opinion about the economy and artificial intelligence. Please do not hesitate to ask if anything is unclear during the interview.
-
-To start, can you tell me about your general view on the current state of the economy?

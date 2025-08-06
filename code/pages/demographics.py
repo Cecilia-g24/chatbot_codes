@@ -3,7 +3,7 @@ import os
 from utils import (
     check_password,
     check_if_interview_completed,
-    save_interview_data,
+    save_questionnaire,
 )
 import config
 
@@ -259,21 +259,27 @@ if submitted:
             st.session_state.qdata[key] = value
         
         # Save to file
-        path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
-        with open(path, "a") as f:
-            f.write("\n\n--- Questionnaire 1 (Demographics) Responses ---\n")
-            for key, value in st.session_state.qdata.items():
-                # Handle None values gracefully
-                display_value = value if value is not None else "Not provided"
-                f.write(f"{key}: {display_value}\n")
-        
-        st.success("✅ Questionnaire 1 responses saved.")
-        st.session_state.demographics_done = True
-        st.session_state.qnsubmitted = 1
+        try:
+            success = save_questionnaire(
+                username=st.session_state.username,
+                questionnaire_data=st.session_state.qdata,
+                transcripts_directory=config.TRANSCRIPTS_DIRECTORY,
+                file_name_addition="_demographics",
+                max_attempts=100
+            )
+            
+            if success:
+                st.session_state.demographics_done = True
+            else:
+                st.error("❌ Unable to save questionnaire data after multiple attempts.")
+                st.error("Please try submitting again or contact support if the problem persists.")
+        except Exception as e:
+                st.error(f"❌ Error saving questionnaire: {str(e)}")
+                st.error("Please try submitting again or contact support.")
+
     else:
         st.info("Please fill out all required fields to continue.")
-        # Optionally, you could show which fields are missing:
-        # st.info(f"Please fill out these required fields: {', '.join(missing_fields)}")
+
 
 if st.session_state.demographics_done:
     st.session_state.test = st.session_state.username    

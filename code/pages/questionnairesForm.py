@@ -3,7 +3,7 @@ import os
 from utils import (
     check_password,
     check_if_interview_completed,
-    save_interview_data,
+    save_questionnaire,
 )
 import config
 st.set_page_config(page_title="questionnaires", page_icon="🧠")
@@ -22,12 +22,12 @@ with st.form(f"q{q['key']}_form"):
     st.write(q["instructions"])
     
     answers = {}
-    questions = q["questions"]  # Direct access instead of getattr
-    labels = q["labels"]        # Direct access instead of getattr
+    questions = q["questions"]  
+    labels = q["labels"]        
     
     for key, question in questions.items():
         st.markdown(f"**({key})** {question}")
-        answers[key] = st.radio(
+        answers[f"{q['key']}_{key}"] = st.radio(
             label="--------_",
             options=labels,
             index=None,
@@ -46,12 +46,26 @@ if submitted:
     if allFilledOut:
         response_key = f"q{q['key']}_responses"
         st.session_state[response_key] = answers
-        
-        path = os.path.join(config.TRANSCRIPTS_DIRECTORY, f"{st.session_state.username}.txt")
-        with open(path, "a") as f:
-            f.write(f"\n\n--- {q['key']} Responses ---\n")  # Changed from q['title'] to q['key']
-            for key, value in st.session_state[response_key].items():
-                f.write(f"{key}: {value}\n")
+                # Save to file
+        try:
+            success = save_questionnaire(
+                username=st.session_state.username,
+                questionnaire_data=st.session_state[response_key],
+                transcripts_directory=config.TRANSCRIPTS_DIRECTORY,
+                file_name_addition=f"_{q['key']}",
+                max_attempts=100
+            )
+            
+            if success:
+                st.success(f"✅ {q['key']} responses saved.")  # Changed from q['title'] to q['key']
+                st.switch_page("pages/qOrganizer.py")
+            else:
+                st.error("❌ Unable to save questionnaire data after multiple attempts.")
+                st.error("Please try submitting again or contact support if the problem persists.")
+        except Exception as e:
+                st.error(f"❌ Error saving questionnaire: {str(e)}")
+                st.error("Please try submitting again or contact support.")
+
         
         st.success(f"✅ {q['key']} responses saved.")  # Changed from q['title'] to q['key']
         st.switch_page("pages/qOrganizer.py")

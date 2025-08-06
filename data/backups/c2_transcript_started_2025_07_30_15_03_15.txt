@@ -1,9 +1,0 @@
-
-Start of Chat Interview
-assistant: What is your favorite animal?
-user: ctas
-assistant: Cats are wonderful animals! What is it that you particularly like about cats?
-user: no
-assistant: I understand. Could you tell me why cats are your favorite animal?
-user: no
-assistant: That's okay. Is there another animal you would like to talk about?

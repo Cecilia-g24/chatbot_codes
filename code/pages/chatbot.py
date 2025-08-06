@@ -48,7 +48,8 @@ defaults = {
     "start_time": time.time(),
     "closing_code_found": None,
     "startNextPhase": False,
-    "initial_message_displayed": False
+    "initial_message_displayed": False,
+    'file_suffix': "_interview"
 }
 
 for key, value in defaults.items():
@@ -159,9 +160,10 @@ if st.session_state.interview_active:
                         username=st.session_state.username,
                         transcripts_directory=config.TRANSCRIPTS_DIRECTORY,
                         times_directory=config.TIMES_DIRECTORY,
+                        file_name_addition_transcript = st.session_state.file_suffix
                     )
                     final_saved = check_if_interview_completed(
-                        config.TRANSCRIPTS_DIRECTORY, st.session_state.username
+                        config.TRANSCRIPTS_DIRECTORY, st.session_state.username, st.session_state.file_suffix,  
                     )
                     time.sleep(0.1)
                 st.rerun()

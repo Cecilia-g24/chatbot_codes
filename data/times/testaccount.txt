@@ -1,2 +1,2 @@
-Start time (UTC): 31/07/2025 12:02:50
-Interview duration (minutes): 0.36
+Start time (UTC): 06/08/2025 10:40:05
+Interview duration (minutes): 1.47
