@@ -20,7 +20,8 @@ if config.LOGINS and True:  # test_Mode assumed True
 # Initialize the questionnaire list - randomize only on first run
 if "selected_q_keys" not in st.session_state:
     # First time running - create randomized order
-    questionnaire_list = ["ESS", "ATAS", "ASKU", "IE4", "L1", "BFI10", "ICTSC25"]
+    #questionnaire_list = ["BFI10", "CAAS", "PIFS", "JIS", "ESS", "ATAS", "IUS12", "IE4", "TAM_AI"]
+    questionnaire_list = ["IE4", "TAM_AI"]
     random.shuffle(questionnaire_list)
     st.session_state.selected_q_keys = questionnaire_list
     st.session_state.numquests = len(st.session_state.selected_q_keys)

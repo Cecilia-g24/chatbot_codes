@@ -6,6 +6,8 @@ from utils import (
     save_questionnaire,
 )
 import config
+import time
+
 st.set_page_config(page_title="questionnaires", page_icon="🧠")
 # Auth + username
 if config.LOGINS and True:  # test_Mode assumed True
@@ -15,7 +17,12 @@ if config.LOGINS and True:  # test_Mode assumed True
     st.session_state.username = username
 
 
+
 q = next(q for q in config.QUESTIONNAIRES if q["key"] == st.session_state.selected_q_keys[st.session_state.qcount])
+
+# Initialize start time when questionnaire loads
+if f"q{q['key']}_start_time" not in st.session_state:
+    st.session_state[f"q{q['key']}_start_time"] = time.time()
 
 with st.form(f"q{q['key']}_form"):
     st.markdown(f"### 📝 Questionnaires ({st.session_state.qcount+1}/{st.session_state.numquests})")
@@ -48,12 +55,20 @@ if submitted:
         st.session_state[response_key] = answers
                 # Save to file
         try:
+            # Calculate timing data
+            end_time = time.time()
+            start_time = st.session_state[f"q{q['key']}_start_time"]
+            time_spent = end_time - start_time
+
             success = save_questionnaire(
                 username=st.session_state.username,
                 questionnaire_data=st.session_state[response_key],
                 transcripts_directory=config.TRANSCRIPTS_DIRECTORY,
                 file_name_addition=f"_{q['key']}",
-                max_attempts=100
+                max_attempts=100,
+                start_time=start_time,
+                end_time=end_time,
+                time_spent=time_spent
             )
             
             if success:

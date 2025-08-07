@@ -43,21 +43,22 @@ st.title("Important Information for Participants")
 st.markdown("""
 Thank you for your interest in our study. This is a **non-commercial research project** conducted by the Nuremberg Institute for Market Decisions (NIM), a non-profit organization. The purpose of the study is to better understand what people think about the economy and the role of artificial intelligence (AI) in their lives.
 
-This study is conducted for scientific, non-commercial purposes. In addition to academic publications, some of the research results will be made available to the public. Your participation in this study is completely voluntary.
+This study is conducted for scientific, non-commercial purposes. In addition to academic publications, some of the research results will be made available to the public. Your participation in this study is completely voluntary. You have to be at least 18 years old to take part. The whole study takes about 1 hour. 
 """)
 
 st.header("What does the study involve?")
 
 st.subheader("Chatbot Interview")
 st.markdown("""
-In the first part, you will engage in a text-based conversation with a chatbot. The chatbot will ask questions about your personal opinions and experiences related to the economy and artificial intelligence.
+In the first part, you will engage in a text-based conversation with a chatbot for about 30 minutes. The chatbot will ask questions about your personal opinions and experiences related to the economy and artificial intelligence.
 - You do **not** need to have any special knowledge.
 - **All views are welcome.**
+- You decide which experiences or thoughts you want to share with us.
 """)
 
 st.subheader("Questionnaires")
 st.markdown("""
-After the interview, you will be asked to complete a set of questionnaires. These include:
+After the interview, you will be asked to complete a set of questionnaires for about 30 minutes. These include:
 
 - Basic demographic information (e.g., age, gender, education)
 - Standardized psychological and personality questionnaires
@@ -68,18 +69,18 @@ st.header("Important Information About Your Privacy and Data Use")
 st.markdown("""
 Your privacy and confidentiality are extremely important to us. To help protect your identity:
 
-- Do **not** share any personally identifiable information (PII) during the chatbot interview. This includes names, addresses, phone numbers, email addresses, employer names, or any other details that could identify you or someone else.
+- Do **not** share any personally identifiable information during the chatbot interview. This includes names, addresses, phone numbers, email addresses, employer names, or any other details that could identify you or someone else.
 - Do **not** disclose confidential or sensitive information that you or others would prefer to keep private.
 - Only share information you would feel comfortable posting in a public forum.
 
-We will attempt to detect and remove PII from the data stored at NIM before data analysis, but we **cannot guarantee** complete removal. **You are responsible for what you choose to share.**
+We will attempt to detect and remove personally identifiable information from the data stored at NIM before data analysis, but we **cannot guarantee** complete removal. **You are responsible for what you choose to share.**
 """)
 
 st.subheader("Use of the OpenAI API")
 st.markdown("""
-- The chatbot interview (but not any other part of this study) is conducted via the **OpenAI API**.
+- The chatbot interview (but not any other part of this study)  uses technology developed by OpenAI, Inc., a U.S.-based company. This technology enables a  realistic and interactive conversation experience. From a technical perspective, the interview is conducted via the OpenAI API, which means that your inputs during the conversation are transmitted to OpenAI's servers, where they are processed in real time to generate appropriate responses.
 - NIM does **not** control how OpenAI stores or processes interview responses.
-- If you are uncomfortable with OpenAI processing or storing your interview responses, **please do not participate**.
+- If you are uncomfortable with OpenAI processing your interview responses, **please do not participate**.
 """)
 
 st.subheader("Data Storage and Use")
@@ -120,7 +121,7 @@ Except as expressly stated in this privacy statement, Personal Information colle
 Personal Information is deleted once the purpose for which it was collected no longer applies and in accordance with the retention and deletion periods required by U.S. Data Privacy Laws.
 If you participate in the survey via Prolific you need to have a valid Prolific account. Furthermore, Prolifc collects certain technical data, including your Submission ID, Participant ID and timestamp, and your inputs (collectively, “Usage Data”), is automatically collected by the servers of Prolific. We use reasonable efforts to engage service providers that take appropriate measures to protect your Personal Information; however, it is the responsibility of each of those service providers to comply with U.S. Data Privacy Laws, and we take no responsibility for their privacy practices and compliance. For further details, please refer to the privacy policy of the service provider: https://prolific.notion.site/Privacy-Notices-2d794a61037642daaa4717e0944a8588.
             
-Furthermore, we use the OpenAI API for the text-based interview in this study. OpenAI collects certain technical data, including time stamps, and your inputs (collectively, “Usage Data”) during the interview section of this study. We do not control how OpenAI stores or uses this data, and cannot enforce its deletion from OpenAI's systems. We use reasonable efforts to engage service providers that take appropriate measures to protect your Personal Information; however, it is the responsibility of each of those service providers to comply with U.S. Data Privacy Laws, and we take no responsibility for their privacy practices and compliance. For further details, please refer to the privacy policy of the service provider: https://platform.openai.com/docs/guides/your-data 
+We use the OpenAI API for the text-based interview in this study. OpenAI collects certain technical data, including time stamps, and your inputs (collectively, “Usage Data”) during the interview section of this study. We do not control how OpenAI stores or uses this data, and cannot enforce its deletion from OpenAI's systems. We use reasonable efforts to engage service providers that take appropriate measures to protect your Personal Information; however, it is the responsibility of each of those service providers to comply with U.S. Data Privacy Laws, and we take no responsibility for their privacy practices and compliance. For further details, please refer to the privacy policy of the service provider: https://platform.openai.com/docs/guides/your-data 
 """)
 
 st.header("Voluntary Participation and Consent")
@@ -128,6 +129,7 @@ st.header("Voluntary Participation and Consent")
 st.markdown("""
 By participating, you confirm that:
 
+- You are at lest 18 years old.
 - You understand the purpose and structure of the study.
 - You understand the risks related to sharing personal information.
 - You consent to the processing your interview responses via the OpenAI API.
@@ -139,7 +141,7 @@ If you do **not** agree with any part, **please do not continue**.
 # Consent checkbox
 agree1 = st.checkbox("I hereby consent that the information provided by me within the survey, some of which may constitute „Personal Information“ as such term is used under U.S. Data Privacy Laws (defined above), may be collected and processed by NIM and disclosed by NIM to its third-party external research partners for the purpose of evaluating the survey. I am aware that I can withdraw my consent at any time by contacting NIM’s Data Protection Officer at privacy@nim.org. The withdrawl of consent does not affect the lawfulness of the processing carried out on the basis oft the consent until the withdrawal.")
 
-agree2 = st.checkbox("I confirm that I have read and understood the information above. I voluntarily agree to take part in this study under the conditions described, including the processing of my interview responses via the OpenAI API.")
+agree2 = st.checkbox("I confirm that I have read and understood the information above. I voluntarily agree to take part in this study under the conditions described.")
 
 if agree1 and agree2:
     st.success("✅ Thank you for consenting! You can now start the interview.")

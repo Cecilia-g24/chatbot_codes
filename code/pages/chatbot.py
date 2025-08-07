@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 import os
+import json
 from openai import OpenAI
 from utils import (
     check_password,
@@ -14,7 +15,7 @@ st.set_page_config(page_title="chatbot", page_icon=config.AVATAR_INTERVIEWER)
 
 # Helper functions (only for reused functionality)
 def save_backup_data():
-    """Save backup interview data - used multiple times"""
+    """Save backup interview data"""
     try:
         save_interview_data(
             username=st.session_state.username,
@@ -27,8 +28,39 @@ def save_backup_data():
         pass
 
 def find_closing_code(text):
-    """Find closing code in text - used multiple times"""
+    """Find closing code in text """
     return next((code for code in config.CLOSING_MESSAGES if code in text), None)
+
+def save_timing_data(event_type, duration, message_index, message_content):
+    """Save timing data to a separate log file"""
+    timing_entry = {
+        "timestamp": time.time(),
+        "event_type": event_type,  # "chatbot_response" or "human_response"
+        "duration_seconds": duration,
+        "message_index": message_index,
+        "message_length_chars": len(message_content),
+        "message_content": message_content,
+        "username": st.session_state.username
+    }
+    
+    # Create timing log file
+    timing_file = os.path.join(
+        config.TRANSCRIPTS_DIRECTORY, 
+        f"{st.session_state.username}_timings.jsonl"
+    )
+    
+    try:
+        with open(timing_file, "a", encoding='utf-8') as f:
+            f.write(json.dumps(timing_entry, ensure_ascii=False) + "\n")
+    except Exception as e:
+        # Fallback: save without message content if JSON serialization fails
+        try:
+            fallback_entry = timing_entry.copy()
+            fallback_entry["message_content"] = f"[ENCODING_ERROR: {str(e)}]"
+            with open(timing_file, "a", encoding='utf-8') as f:
+                f.write(json.dumps(fallback_entry, ensure_ascii=False) + "\n")
+        except:
+            pass
 
 # Auth + username
 if config.LOGINS and True:  # test_Mode assumed True
@@ -49,7 +81,9 @@ defaults = {
     "closing_code_found": None,
     "startNextPhase": False,
     "initial_message_displayed": False,
-    'file_suffix': "_interview"
+    'file_suffix': "_interview",
+    "last_assistant_response_start": None,  # Track when assistant starts responding
+    "last_user_input_time": None,  # Track when user can start typing
 }
 
 for key, value in defaults.items():
@@ -81,7 +115,7 @@ if config.TEMPERATURE is not None:
     api_kwargs["temperature"] = config.TEMPERATURE
 
 # Prevent duplicate interviews
-if (check_if_interview_completed(config.TIMES_DIRECTORY, st.session_state.username) 
+if (check_if_interview_completed(config.TIMES_DIRECTORY, st.session_state.username, st.session_state.file_suffix) 
     and not st.session_state.messages):
     st.session_state.interview_active = False
     st.warning("Interview already attempted.")
@@ -90,12 +124,39 @@ if (check_if_interview_completed(config.TIMES_DIRECTORY, st.session_state.userna
 if not st.session_state.messages:
     st.session_state.messages.append({"role": "system", "content": config.SYSTEM_PROMPT})
     
+    # Start timing for first chatbot response
+    st.session_state.last_assistant_response_start = time.time()
+    
     with st.chat_message("assistant", avatar=config.AVATAR_INTERVIEWER):
+        # Show "please wait" message initially
+        placeholder = st.empty()
+        placeholder.markdown("Please wait while I prepare your interview...")
+        
+        # Stream the actual response
         stream = client.chat.completions.create(**api_kwargs)
-        first_msg = st.write_stream(stream)
+        first_msg = ""
+        
+        for chunk in stream:
+            delta = chunk.choices[0].delta.content
+            if delta:
+                first_msg += delta
+                # Replace placeholder with streaming content once we have some text
+                if len(first_msg) > 5:
+                    placeholder.markdown(first_msg + "▌")
+        
+        # Show final message without cursor
+        placeholder.markdown(first_msg)
+    
+    # Calculate and save chatbot response duration
+    chatbot_duration = time.time() - st.session_state.last_assistant_response_start
+    save_timing_data("chatbot_response", chatbot_duration, len(st.session_state.messages), first_msg)
     
     st.session_state.messages.append({"role": "assistant", "content": first_msg})
     st.session_state.initial_message_displayed = True
+    
+    # Set time when user can start responding
+    st.session_state.last_user_input_time = time.time()
+    
     save_backup_data()
 
 # Display previous messages
@@ -114,10 +175,18 @@ if st.session_state.interview_active:
 # Chat input + response logic
 if st.session_state.interview_active:
     if msg := st.chat_input("Your message here"):
+        # Calculate human response duration (time since last chatbot response finished)
+        if st.session_state.last_user_input_time:
+            human_duration = time.time() - st.session_state.last_user_input_time
+            save_timing_data("human_response", human_duration, len(st.session_state.messages), msg)
+        
         st.session_state.messages.append({"role": "user", "content": msg})
         
         with st.chat_message("user", avatar=config.AVATAR_RESPONDENT):
             st.markdown(msg)
+        
+        # Start timing for chatbot response
+        st.session_state.last_assistant_response_start = time.time()
         
         with st.chat_message("assistant", avatar=config.AVATAR_INTERVIEWER):
             placeholder = st.empty()
@@ -135,6 +204,10 @@ if st.session_state.interview_active:
                 # Check for closing codes during streaming
                 if find_closing_code(full_response):
                     break
+            
+            # Calculate chatbot response duration (streaming complete)
+            chatbot_duration = time.time() - st.session_state.last_assistant_response_start
+            save_timing_data("chatbot_response", chatbot_duration, len(st.session_state.messages), full_response)
             
             # Determine if interview should close
             closing_code = find_closing_code(full_response)
@@ -168,7 +241,8 @@ if st.session_state.interview_active:
                     time.sleep(0.1)
                 st.rerun()
             else:
-                # Continue interview
+                # Continue interview - set time when user can start responding
                 placeholder.markdown(full_response)
                 st.session_state.messages.append({"role": "assistant", "content": full_response})
+                st.session_state.last_user_input_time = time.time()
                 save_backup_data()
