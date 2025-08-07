@@ -118,7 +118,7 @@ MAX_OUTPUT_TOKENS = 2048
 
 
 # Display login screen with usernames and simple passwords for studies
-LOGINS = True
+LOGINS = False
 
 
 
@@ -134,7 +134,7 @@ AVATAR_RESPONDENT = "\U0001F9D1\U0000200D\U0001F4BB"
 
 
 # Max time for countdown timer for interview / API interaction (in seconds)
-TIME_SETTING = 1200 #1200       #20 min
+TIME_SETTING = 1800 #1200       #20 min
 
 
 # ---------------------------------------------------
@@ -617,7 +617,7 @@ submit_warning = "Please make sure to press 'Submit' button after answering all 
 
 
 # Prolific redirection URL
-prolific_completion_url = "https://app.prolific.com/submissions/complete?cc=C18B71P5"
+prolific_completion_url = "https://app.prolific.com/submissions/complete?cc=CMUNAMK7"
 
 
 
