@@ -6,15 +6,16 @@ from utils import (
     check_password,
     check_if_interview_completed,
     save_interview_data,
+    check_prolific_access
 )
 import os
 import config
 
-# Test switch (True = test mode with password login, False = Prolific mode)
-test_Mode = True
+
 
 st.set_page_config(page_title="Interview Start", page_icon="💬")
-
+# Test switch (True = test mode with password login, False = Prolific mode)
+st.session_state.test_Mode = True
 
 # Extract Prolific parameters from URL 
 query_params = st.query_params
@@ -26,8 +27,8 @@ session_id = query_params.get("SESSION_ID", [None])
 if prolific_pid:
     st.markdown(f"👤 Prolific PID: `{prolific_pid}`")
 
-# Check if usernames and config.logins (always True) and Prolific_mode are enabled
-if config.LOGINS and test_Mode:
+# Check if login mode is enabled otherwise prolific mode is assumed
+if config.LOGINS:
     pwd_correct, username = check_password()
     if not pwd_correct:
         st.stop()
@@ -35,7 +36,9 @@ if config.LOGINS and test_Mode:
         st.session_state.username = username
 # set prolific_pid = username, when login function is disabled
 else:
-    st.session_state.username = prolific_pid or "testaccount"
+    st.session_state.username = prolific_pid
+    check_prolific_access()
+
 
 
 st.title("Important Information for Participants")

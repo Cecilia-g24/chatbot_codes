@@ -5,17 +5,22 @@ from utils import (
     check_password,
     check_if_interview_completed,
     save_interview_data,
+    check_prolific_access
 )
 import config
 
 st.set_page_config(page_title="qOrganizer", page_icon="🧠")
 
-# Auth + username
-if config.LOGINS and True:  # test_Mode assumed True
+# Check if login mode is enabled otherwise prolific mode is assumed
+if config.LOGINS:
     pwd_correct, username = check_password()
     if not pwd_correct:
         st.stop()
-    st.session_state.username = username
+    else:
+        st.session_state.username = username
+# set prolific_pid = username, when login function is disabled
+else:
+    check_prolific_access()
 
 # Initialize the questionnaire list - randomize only on first run
 if "selected_q_keys" not in st.session_state:
