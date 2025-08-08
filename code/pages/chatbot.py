@@ -122,7 +122,7 @@ if config.TEMPERATURE is not None:
     api_kwargs["temperature"] = config.TEMPERATURE
 
 # Prevent duplicate interviews
-if (check_if_interview_completed(config.TIMES_DIRECTORY, st.session_state.username, st.session_state.file_suffix) 
+if (check_if_interview_completed(config.TRANSCRIPTS_DIRECTORY, st.session_state.username, st.session_state.file_suffix) 
     and not st.session_state.messages):
     st.session_state.interview_active = False
     st.warning("Interview already attempted.")

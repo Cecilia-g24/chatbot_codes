@@ -22,8 +22,8 @@ prolific_pid = st.query_params.get("PROLIFIC_PID")
 prolific_pid = prolific_pid[0] if isinstance(prolific_pid, list) and prolific_pid else prolific_pid
 prolific_pid = prolific_pid if isinstance(prolific_pid, str) and prolific_pid else None
 # on-screen display to show prolific id
-if prolific_pid:
-    st.markdown(f"👤 Prolific PID: `{prolific_pid}`")
+#if prolific_pid:
+#   st.markdown(f"👤 Prolific PID: `{prolific_pid}`")
 
 # Auth vs. Prolific mode
 if config.LOGINS:

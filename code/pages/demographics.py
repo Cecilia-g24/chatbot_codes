@@ -130,26 +130,36 @@ with st.form("survey_form"):
         index=None
     )
     
-    # Employment status (with additional options)
     answers["employment_status"] = st.selectbox(
         "What is your current employment status?",
         options=[
-            "Employed full-time (35+ hours/week)",
-            "Employed part-time (less than 35 hours/week)",
-            "Self-employed/Freelancer",
-            "Unemployed, actively seeking work",
-            "Unemployed, not seeking work",
-            "On temporary leave",
-            "Furloughed",
-            "Retired",
-            "Full-time student",
-            "Homemaker/Caregiver",
-            "Unable to work due to disability",
-            "Other"
+            "Employed, full-time (35+ hours/week)",
+            "Employed, part-time (1–34 hours/week)",
+            "Self-employed (own business, farm, or freelance)",
+            "Unemployed, actively looking for work",
+            "Unemployed – on temporary layoff/furloughed",
+            "Not in labor force – retired",
+            "Not in labor force – student",
+            "Not in labor force – homemaker/caregiver",
+            "Not in labor force – unable to work due to disability/health",
+            "Not in labor force – other reason (not seeking work)",
+            "Other",
+            "Prefer not to answer"
         ],
         index=None
     )
-    
+
+    answers["student_enrollment"] = st.selectbox(
+        "Are you currently enrolled in school, college, or university?",
+        options=[
+            "No",
+            "Yes, full-time",
+            "Yes, part-time",
+            "Prefer not to answer"
+        ],
+        index=None
+    )
+        
     # Occupation
     answers["occupation"] = st.selectbox(
         "What best describes your occupation, field of work, or intended career path? (If currently working: select your current job area. If not currently working: select your most recent job, your field of study, or intended career area)",
@@ -231,8 +241,14 @@ with st.form("survey_form"):
     
     # Presidential vote
     answers["presidential_vote"] = st.radio(
-        "Who did you vote for in the last U.S. presidential election?",
+        "Who did you vote for in the LAST U.S. presidential election?",
         options=["Donald Trump", "Kamala Harris", "Someone else", "I did not vote", "Prefer not to say"],
+        index=None
+    )
+    
+    answers["presidential_vote_rep"] = st.radio(
+        "If the U.S. presidential election was REPEATED TODAY, who would you vote for then?",
+        options=["Donald Trump", "Kamala Harris", "Someone else", "I would not vote", "Prefer not to say"],
         index=None
     )
     
