@@ -18,28 +18,22 @@ st.set_page_config(page_title="Interview Start", page_icon="💬")
 st.session_state.test_Mode = True
 
 # Extract Prolific parameters from URL 
-query_params = st.query_params
-prolific_pid = query_params.get("PROLIFIC_PID", [None])
-study_id = query_params.get("STUDY_ID", [None])
-session_id = query_params.get("SESSION_ID", [None])
-
+prolific_pid = st.query_params.get("PROLIFIC_PID")
+prolific_pid = prolific_pid[0] if isinstance(prolific_pid, list) and prolific_pid else prolific_pid
+prolific_pid = prolific_pid if isinstance(prolific_pid, str) and prolific_pid else None
 # on-screen display to show prolific id
 if prolific_pid:
     st.markdown(f"👤 Prolific PID: `{prolific_pid}`")
 
-# Check if login mode is enabled otherwise prolific mode is assumed
+# Auth vs. Prolific mode
 if config.LOGINS:
     pwd_correct, username = check_password()
     if not pwd_correct:
         st.stop()
-    else:
-        st.session_state.username = username
-# set prolific_pid = username, when login function is disabled
+    st.session_state.username = username
 else:
     st.session_state.username = prolific_pid
     check_prolific_access()
-
-
 
 st.title("Important Information for Participants")
 

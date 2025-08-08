@@ -5,13 +5,13 @@ import os
 from datetime import datetime
 
 def check_prolific_access():
-    if "username" not in st.session_state or not st.session_state.username:
+    username = st.session_state.get("username")
+    # Must be a non-empty string
+    if not isinstance(username, str) or not username.strip():
         st.error("❌ Unauthorized access.")
         st.stop()
-    return st.session_state.username
+    return username
 
-# Password screen for dashboard (note: only very basic authentication!)
-# Based on https://docs.streamlit.io/knowledge-base/deploy/authentication-without-sso
 def check_password():
     """Returns 'True' if the user has entered a correct password."""
 
