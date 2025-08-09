@@ -25,8 +25,7 @@ else:
 # Initialize the questionnaire list - randomize only on first run
 if "selected_q_keys" not in st.session_state:
     # First time running - create randomized order
-    questionnaire_list = ["BFI10", "CAAS", "PIFS", "JIS", "ESS", "ATAS", "IUS12", "IE4", "TAM_AI"]
-    #questionnaire_list = ["IE4", "TAM_AI", "CAAS"]
+    questionnaire_list = ["BFI10", "ICTSC25", "PIFS", "AIAS4", "ESS_they", "ATAS", "IUS12", "IE4", "TAM_AI"]
     random.shuffle(questionnaire_list)
     st.session_state.selected_q_keys = questionnaire_list
     st.session_state.numquests = len(st.session_state.selected_q_keys)

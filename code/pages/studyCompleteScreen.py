@@ -26,7 +26,7 @@ if 'finish_time' not in st.session_state:
     st.session_state.finish_time = time.time()
 
 st.title("🎉 Study Complete")
-st.success("You have completed the study. Thank you very much for your time and effort! Please return to Prolific to log your study completion.")
+st.success("You have completed the study. Thank you very much for your time and effort! Please return to Prolific by pressing the button below to log your study completion.")
 
 # Optional comments section
 st.markdown("---")

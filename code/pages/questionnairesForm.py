@@ -24,6 +24,13 @@ else:
 
 
 q = next(q for q in config.QUESTIONNAIRES if q["key"] == st.session_state.selected_q_keys[st.session_state.qcount])
+#st.markdown(st.session_state.qdata["gender"])
+#st.markdown(q['key'])
+if q['key'] == 'ESS_they':
+    if st.session_state.qdata["gender"]=="Male" or st.session_state.qdata["gender"]=="Prefer not to say":
+        q = next(q for q in config.QUESTIONNAIRES if q["key"] == "ESS_he")
+    if st.session_state.qdata["gender"]=="Female":
+        q = next(q for q in config.QUESTIONNAIRES if q["key"] == "ESS_she")
 
 # Initialize start time when questionnaire loads
 if f"q{q['key']}_start_time" not in st.session_state:
