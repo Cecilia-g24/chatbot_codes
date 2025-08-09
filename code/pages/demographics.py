@@ -23,6 +23,8 @@ else:
     check_prolific_access()
 
 st.title("📝 Questionnaire 1: Demographics")
+st.success("Thank you for your effort! You finished the interview.")
+st.success("To finish the study, please fill out this and the following questionnaires.")
 
 # Initialise session state
 if "demographics_done" not in st.session_state:
@@ -60,7 +62,7 @@ with st.form("survey_form"):
 
     # ZIP code (optional)
     answers["zip_code"] = st.text_input(
-        "ZIP/postal code (optional - only used to ensure that we represent all geographic regions of the the country)",
+        "ZIP/postal code (optional - only used to ensure that we represent all geographic regions of the country)",
         max_chars=5,
         help="This helps us create maps showing geographic representation and ensure our research includes diverse regions across the country. Your ZIP code will only be used for aggregate geographic analysis.",
         placeholder="e.g., 90210"
