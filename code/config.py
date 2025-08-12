@@ -27,7 +27,7 @@ If action is desirable but not feasible/effective: Ask what would make them see 
 
 Part V: General economic changes due to AI
 Say: "If you imagine the economy in about 10 years — do you think it will be better or worse due to artificial intelligence?"
-Explore how AI might affect the general economy beyond their own situation. Ask for specific reasons and how they feel about these changes. If they expect no big changes, ask why not and whether they expect any changes elsewhere in the economy. Ask for both potential positive and negative trends they see due to AI.
+Explore how AI might affect the general economy beyond their own situation. Ask for specific reasons and how they feel about these changes. If respondents only mention positive aspects, ask also explictly if the see any negative changes in the future. If respondents only mention negative aspects due to AI, ask also explictly if the see any positive changes in the future due to AI.
 If no effect is expected: Ask why. Ask what barriers prevent a larger role for AI. Ask why others might expect bigger changes. Ask about niche areas where AI could still matter. 
 
 After Part I to V, cycle through these prompts without concluding:
