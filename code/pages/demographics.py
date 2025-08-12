@@ -7,6 +7,7 @@ from utils import (
     check_prolific_access
 )
 import config
+import random
 
 st.set_page_config(page_title="demographics", page_icon="📝")
 
@@ -21,6 +22,33 @@ if config.LOGINS:
 # set prolific_pid = username, when login function is disabled
 else:
     check_prolific_access()
+
+# Set a seed for consistent randomization across the session
+if 'randomization_seed' not in st.session_state:
+    st.session_state.randomization_seed = random.randint(1, 10000)
+
+# Use the seed for consistent randomization
+random.seed(st.session_state.randomization_seed)
+
+# Generate two random booleans for consistent ordering decisions
+trump_first = random.random() < 0.5
+dem_first = random.random() < 0.5
+
+# Set Trump/Harris order based on first random boolean
+trump_harris_order = ["Donald Trump", "Kamala Harris"] if trump_first else ["Kamala Harris", "Donald Trump"]
+
+# Create presidential vote options with randomized Trump/Harris order
+presidential_options = trump_harris_order + ["Someone else", "I did not vote", "Prefer not to say"]
+presidential_repeat_options = trump_harris_order + ["Someone else", "I would not vote", "Prefer not to say"]
+
+# Set Democrat/Republican order based on second random boolean
+dem_rep_order = ["Democrat", "Republican"] if dem_first else ["Republican", "Democrat"]
+
+# Create political identification options with randomized Dem/Rep order
+political_id_options = dem_rep_order + ["Independent", "Other", "No preference", "Prefer not to say"]
+
+# Reset random seed to avoid affecting other parts of the code
+random.seed()
 
 st.title("📝 Questionnaire 1: Demographics")
 st.success("Thank you for your effort! You finished the interview.")
@@ -46,7 +74,7 @@ with st.form("survey_form"):
         index=None
     )
     
-    # Gender question
+    # Gender questions
     answers["gender"] = st.radio(
         "What is your gender?",
         options=["Male", "Female", "Other", "Prefer not to say"],
@@ -244,20 +272,20 @@ with st.form("survey_form"):
     # Presidential vote
     answers["presidential_vote"] = st.radio(
         "Who did you vote for in the LAST U.S. presidential election?",
-        options=["Donald Trump", "Kamala Harris", "Someone else", "I did not vote", "Prefer not to say"],
+        options=presidential_options,
         index=None
     )
     
     answers["presidential_vote_rep"] = st.radio(
         "If the U.S. presidential election was REPEATED TODAY, who would you vote for then?",
-        options=["Donald Trump", "Kamala Harris", "Someone else", "I would not vote", "Prefer not to say"],
+        options=presidential_repeat_options,
         index=None
     )
     
     # Political identification (with additional option)
     answers["political_id"] = st.radio(
         "How do you identify politically?",
-        options=["Democrat", "Republican", "Independent", "Other", "No preference", "Prefer not to say"],
+        options=political_id_options,
         index=None
     )
     
